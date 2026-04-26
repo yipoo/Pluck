@@ -1,4 +1,4 @@
-# PRD — Snap (Mac 端 OCR / 截图 / 剪贴板套件)
+# PRD — Pluck (Mac 端 OCR / 截图 / 剪贴板套件)
 
 **版本**:0.1(MVP 立项)
 **日期**:2026-04-26
@@ -25,7 +25,7 @@
 
 ### 1.2 产品定位
 
-**Snap = 全本地隐私 + 一站式工作流 + AI 增强**,做"PixPin 进阶版" + "国产 CleanShot"。
+**Pluck = 全本地隐私 + 一站式工作流 + AI 增强**,做"PixPin 进阶版" + "国产 CleanShot"。
 
 三句话差异化:
 1. **全本地处理**:OCR / 翻译 / 标注全部本地完成,默认不联网,适合处理敏感文档
@@ -178,23 +178,20 @@
 
 ---
 
-## 7. 命名候选
+## 7. 产品命名
 
-`snap` 仅作代号。正式发布前需要做:
-1. **品牌命名**:候选(待 .com 和商标查询):
-   - Glance / Glanced
-   - Pickly
-   - SnapKit(被苹果用了,不行)
-   - Klipp / Klippa
-   - Pixly
-   - Lensly
-   - **Snippet** (太通用)
-   - **Inkwell**
-   - **Frame** (太通用)
-2. **域名**:推荐 `.app` 或 `.com`,预算 ¥100-2000
-3. **商标**:中国 Class 9(软件)+ Class 42(SaaS),约 ¥1500-3000 / 件
+**已定名:Pluck**(2026-04-26)
 
-**决策点**:写代码前不阻塞,但内测前(Sprint 5 末)必须定名。
+选择理由:
+- "to pluck" = 挑出 / 摘取 — 与产品动作(从图里 pluck 文字、从屏幕 pluck 选区、从历史里 pluck 片段)语义对齐
+- 单音节,英文易记,中文营销可直接用英文(对标 Notion / Bear / Linear)
+- 排除 Snap(与 Snap Inc 商标冲突)、Snip(Microsoft Snipping Tool 占用)、SnagIt(TechSmith)、Klippa(荷兰 OCR 公司)等已占品牌
+- 排除候选:Pickly / Glint / Lume / Knack — 备用,若 .app 域名或商标受阻可启用
+
+W7 公证前必须完成的命名相关事项:
+1. **域名**:首选 `pluck.app`,备选 `pluck.cn` / `getpluck.com` / `pluckapp.com`,预算 ¥100-2000
+2. **商标**:中国 Class 9(软件)+ Class 42(SaaS),约 ¥1500-3000 / 件;海外可用 LegalZoom / Trademarkia
+3. **GitHub Org**:`pluck-app` 或 `getpluck`
 
 ---
 
@@ -214,7 +211,7 @@
 
 > 这些决策不阻塞 Sprint 1,但建议在 Sprint 1 结束前拍板。
 
-- [ ] **正式产品名**(影响商标 / 域名 / 上架时机)
+- [x] ~~正式产品名~~ → **Pluck**(2026-04-26 定;待 .app 域名 + 商标查询)
 - [ ] **海外主体形式**(新加坡 / 香港 / 美国 LLC,影响支付与税务)
 - [ ] **是否引入第三方 AI**(影响 v0.2 范围 + 成本结构)
 - [ ] **代码仓库托管位置**(GitHub / GitLab / 自建)

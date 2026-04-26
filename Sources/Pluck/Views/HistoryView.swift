@@ -66,11 +66,11 @@ struct HistoryView: View {
 
     private var snapshotList: some View {
         // TODO W5:展示截图缩略图 grid
-        List(state.snapshots) { snap in
+        List(state.snapshots) { pluck in
             VStack(alignment: .leading) {
-                Text(snap.ocrText ?? "(无 OCR 文本)")
+                Text(pluck.ocrText ?? "(无 OCR 文本)")
                     .lineLimit(2)
-                Text(snap.createdAt, style: .relative)
+                Text(pluck.createdAt, style: .relative)
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }

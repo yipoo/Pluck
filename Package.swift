@@ -2,12 +2,12 @@
 import PackageDescription
 
 let package = Package(
-    name: "Snap",
+    name: "Pluck",
     platforms: [
         .macOS(.v14)
     ],
     products: [
-        .executable(name: "Snap", targets: ["Snap"])
+        .executable(name: "Pluck", targets: ["Pluck"])
     ],
     dependencies: [
         // W2 添加:.package(url: "https://github.com/soffes/HotKey", from: "0.2.0"),
@@ -17,17 +17,17 @@ let package = Package(
     ],
     targets: [
         .executableTarget(
-            name: "Snap",
+            name: "Pluck",
             dependencies: [
                 // W2:"HotKey",
                 // W5:.product(name: "GRDB", package: "GRDB.swift"),
             ],
-            path: "Sources/Snap"
+            path: "Sources/Pluck"
         ),
         .testTarget(
-            name: "SnapTests",
-            dependencies: ["Snap"],
-            path: "Tests/SnapTests"
+            name: "PluckTests",
+            dependencies: ["Pluck"],
+            path: "Tests/PluckTests"
         )
     ]
 )

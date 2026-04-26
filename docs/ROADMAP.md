@@ -1,4 +1,4 @@
-# Roadmap — Snap MVP 8 周冲刺
+# Roadmap — Pluck MVP 8 周冲刺
 
 **目标**:8 周(2 个月)从 0 到 v0.1.0 内测发布
 **起点**:2026-04-26(本周即 W1)
@@ -31,10 +31,10 @@
 
 任务清单:
 - [ ] 在 Xcode 创建 macOS App Target(参考 [SETUP.md](SETUP.md))
-- [ ] 配 Team / Bundle ID(`com.dinglei.snap`)
+- [ ] 配 Team / Bundle ID(`com.dinglei.pluck`)
 - [ ] 引用本 Package 作为 local dependency
 - [ ] `App.swift` 用 `MenuBarExtra` 渲染图标
-- [ ] `MenuBarContentView` 显示"Hello Snap"+ Quit 按钮
+- [ ] `MenuBarContentView` 显示"Hello Pluck"+ Quit 按钮
 - [ ] `SettingsView` 占位(空 Tab 视图)
 - [ ] `Info.plist` 设置 `LSUIElement = YES`
 - [ ] `swift test` 跑通空测试
@@ -53,13 +53,13 @@
 - [ ] 添加 [HotKey](https://github.com/soffes/HotKey) 依赖到 Package.swift
 - [ ] `HotkeyManager` 注册 ⌃⌥A 全局热键
 - [ ] 实现 `ScreenCaptureService.captureFullScreen()`
-- [ ] 截图后保存到 `~/Library/Application Support/Snap/snapshots/<uuid>.png`
+- [ ] 截图后保存到 `~/Library/Application Support/Pluck/snapshots/<uuid>.png`
 - [ ] 第一次截图弹屏幕录制权限请求
 - [ ] 在菜单里显示"最后一张截图"缩略图
 
 **验收**:
 - 按 ⌃⌥A 听到截屏音效,文件落到磁盘
-- 系统设置 → 隐私 → 屏幕录制 中能看到 Snap
+- 系统设置 → 隐私 → 屏幕录制 中能看到 Pluck
 
 **⚠️ 风险**:屏幕录制权限弹窗在沙盒下行为复杂,需要早测。
 

@@ -1,8 +1,8 @@
-# Snap (代号)
+# Pluck
 
 > **一句话**:Mac 上隐私优先的截图 + OCR + 剪贴板套件,所有数据本地处理,数据不上云。
 >
-> ⚠️ `snap` 是临时代号。正式发布前需要换名 + 注册商标 / 域名。候选见 [docs/PRD.md](docs/PRD.md#命名候选)。
+> 🏷️ 项目代号已升为正式名 **Pluck**(2026-04-26 定);需在 W7 公证前完成 .app 域名 + 商标查询。
 
 ## 它是什么
 
@@ -13,7 +13,7 @@
 ## 仓库导航
 
 ```
-snap/
+pluck/
 ├── README.md                ← 你现在在这
 ├── docs/
 │   ├── PRD.md               ← 产品需求文档(MVP 范围、功能列表、用户故事)
@@ -21,8 +21,8 @@ snap/
 │   ├── ROADMAP.md           ← 8 周冲刺计划(每周任务 + 验收标准)
 │   └── SETUP.md             ← 本地开发环境搭建 + Xcode 转换指南
 ├── Package.swift            ← Swift Package 定义(可 swift build / swift run)
-├── Sources/Snap/            ← 源码骨架(Services / Models / Views)
-└── Tests/SnapTests/         ← 单测骨架
+├── Sources/Pluck/            ← 源码骨架(Services / Models / Views)
+└── Tests/PluckTests/         ← 单测骨架
 ```
 
 ## 快速开始
@@ -35,7 +35,7 @@ swift --version
 swift build
 
 # 3. 运行(开发模式,会显示 Dock 图标 — 正式发布需 Xcode 项目 + Info.plist 设 LSUIElement)
-swift run Snap
+swift run Pluck
 
 # 4. 跑测试
 swift test

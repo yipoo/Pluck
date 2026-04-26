@@ -1,8 +1,8 @@
 import Foundation
 
 /// 本地持久化(SQLite via GRDB)— W5 任务。
-/// 数据库位置:`~/Library/Application Support/Snap/snap.sqlite`
-/// 截图缓存目录:`~/Library/Application Support/Snap/snapshots/`
+/// 数据库位置:`~/Library/Application Support/Pluck/pluck.sqlite`
+/// 截图缓存目录:`~/Library/Application Support/Pluck/snapshots/`
 final class Storage {
 
     enum StorageError: Error {
@@ -20,11 +20,11 @@ final class Storage {
             appropriateFor: nil,
             create: true
         )
-        let snapDir = appSupport.appendingPathComponent("Snap", isDirectory: true)
-        let shotsDir = snapDir.appendingPathComponent("snapshots", isDirectory: true)
+        let pluckDir = appSupport.appendingPathComponent("Pluck", isDirectory: true)
+        let shotsDir = pluckDir.appendingPathComponent("snapshots", isDirectory: true)
         try FileManager.default.createDirectory(at: shotsDir, withIntermediateDirectories: true)
 
-        self.dbPath = snapDir.appendingPathComponent("snap.sqlite")
+        self.dbPath = pluckDir.appendingPathComponent("pluck.sqlite")
         self.snapshotsDir = shotsDir
 
         // TODO W5:GRDB DatabasePool 初始化 + migrate
@@ -57,7 +57,7 @@ final class Storage {
 
     // MARK: Snapshots
 
-    func insertSnapshot(_ snap: Snapshot) async throws {
+    func insertSnapshot(_ pluck: Snapshot) async throws {
         // TODO W5
     }
 

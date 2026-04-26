@@ -1,4 +1,4 @@
-# 技术设计 — Snap
+# 技术设计 — Pluck
 
 **版本**:0.1
 **日期**:2026-04-26
@@ -51,7 +51,7 @@
 | **全局热键** | **Carbon HotKey API** + Swift wrapper | NSEvent 全局监听需 Accessibility 权限,体验差 |
 | **剪贴板监听** | **NSPasteboard + 定时轮询(0.5s)** | macOS 不支持 push 模式;轮询 0.5s 是社区共识(Maccy / Pasta 都这么做) |
 | **本地存储** | **GRDB.swift(SQLite 包装)** | Core Data 心智重;GRDB 类型安全 + 性能好 + 异步友好 |
-| **图片缓存** | **直接磁盘 + UUID 文件名** | NSCache 内存压力大;缓存目录用 `Application Support/Snap/` |
+| **图片缓存** | **直接磁盘 + UUID 文件名** | NSCache 内存压力大;缓存目录用 `Application Support/Pluck/` |
 | **依赖管理** | **Swift Package Manager** | CocoaPods 在新项目里已不流行;SPM 是 Apple 官方 |
 | **构建系统** | **swift build / swift test(开发)+ Xcode(发布)** | 开发用 Package 快;发布需 Xcode 配 entitlements / 签名 |
 | **代码风格** | **swift-format**(Apple 官方) | SwiftLint 规则多易吵 |
@@ -197,7 +197,7 @@ CREATE TABLE snapshots (
 );
 ```
 
-数据库文件位置:`~/Library/Application Support/Snap/snap.sqlite`
+数据库文件位置:`~/Library/Application Support/Pluck/pluck.sqlite`
 
 ### 4.7 启动项
 

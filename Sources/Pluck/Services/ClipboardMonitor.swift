@@ -10,7 +10,7 @@ final class ClipboardMonitor {
     private let pollingInterval: TimeInterval = 0.5
 
     /// 标记为"自己写入"的私有 pasteboard type — 我们写剪贴板时附加这个 type,下次扫描时跳过
-    static let ownWriteMarker = NSPasteboard.PasteboardType("com.dinglei.snap.own-write")
+    static let ownWriteMarker = NSPasteboard.PasteboardType("com.dinglei.pluck.own-write")
 
     /// macOS 推荐的"敏感"标记 — 1Password 等密码管理器写入时使用,避免被剪贴板历史工具捕获
     static let concealedType = NSPasteboard.PasteboardType("org.nspasteboard.ConcealedType")

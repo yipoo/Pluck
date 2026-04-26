@@ -1,11 +1,11 @@
 import SwiftUI
 
 @main
-struct SnapApp: App {
+struct PluckApp: App {
     @StateObject private var state = AppState()
 
     var body: some Scene {
-        MenuBarExtra("Snap", systemImage: "camera.viewfinder") {
+        MenuBarExtra("Pluck", systemImage: "camera.viewfinder") {
             MenuBarContentView()
                 .environmentObject(state)
         }

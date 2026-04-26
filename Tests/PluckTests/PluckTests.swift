@@ -1,7 +1,7 @@
 import XCTest
-@testable import Snap
+@testable import Pluck
 
-final class SnapTests: XCTestCase {
+final class PluckTests: XCTestCase {
 
     func testClipboardItemEncodingRoundtrip() throws {
         let item = ClipboardItem(kind: .text, content: "你好,世界")
@@ -13,10 +13,10 @@ final class SnapTests: XCTestCase {
     }
 
     func testSnapshotInit() {
-        let snap = Snapshot(imagePath: "test.png", ocrText: "hello")
-        XCTAssertEqual(snap.imagePath, "test.png")
-        XCTAssertEqual(snap.ocrText, "hello")
-        XCTAssertTrue(snap.annotations.isEmpty)
+        let pluck = Snapshot(imagePath: "test.png", ocrText: "hello")
+        XCTAssertEqual(pluck.imagePath, "test.png")
+        XCTAssertEqual(pluck.ocrText, "hello")
+        XCTAssertTrue(pluck.annotations.isEmpty)
     }
 
     func testStorageDirectoryCreation() throws {

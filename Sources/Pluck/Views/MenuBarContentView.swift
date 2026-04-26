@@ -7,7 +7,7 @@ struct MenuBarContentView: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Image(systemName: "camera.viewfinder")
-                Text("Snap")
+                Text("Pluck")
                     .font(.headline)
                 Spacer()
                 Text("v0.1.0-dev")

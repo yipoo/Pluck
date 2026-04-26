@@ -80,7 +80,7 @@ private struct PrivacyTab: View {
                 get: { state.settings.strictOffline },
                 set: { state.settings.strictOffline = $0; state.settings.persist() }
             ))
-            Text("开启后,Snap 不发起任何 outbound 网络请求。AI 增强功能将不可用。")
+            Text("开启后,Pluck 不发起任何 outbound 网络请求。AI 增强功能将不可用。")
                 .font(.caption)
                 .foregroundStyle(.secondary)
 
@@ -100,14 +100,14 @@ private struct AboutTab: View {
             Image(systemName: "camera.viewfinder")
                 .font(.system(size: 48))
                 .foregroundStyle(.tint)
-            Text("Snap")
+            Text("Pluck")
                 .font(.title2.bold())
             Text("v0.1.0-dev")
                 .foregroundStyle(.secondary)
             Text("隐私优先的 OCR / 截图 / 剪贴板套件,数据全本地处理。")
                 .font(.callout)
                 .multilineTextAlignment(.center)
-            Link("项目仓库", destination: URL(string: "https://github.com/dinglei/snap")!)
+            Link("项目仓库", destination: URL(string: "https://github.com/dinglei/pluck")!)
                 .font(.caption)
         }
         .padding()
