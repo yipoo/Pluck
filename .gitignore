@@ -1,0 +1,40 @@
+# Swift / Xcode
+.build/
+.swiftpm/
+DerivedData/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcuserstate
+xcuserdata/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# Build output
+build/
+*.app
+*.dmg
+*.pkg
+*.zip
+
+# IDE
+.vscode/
+.idea/
+
+# Secrets / Local
+.env
+.env.local
+*.p12
+*.cer
+*.mobileprovision
+SparkleEdDSAKey/
+ApiKeys.swift
+
+# 调研 / 中间产物
+notes/
+scratch/
+TODO.local.md
