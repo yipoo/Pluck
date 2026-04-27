@@ -259,6 +259,7 @@ code { font-family: 'SF Mono', 'Menlo', monospace; font-size: 0.875em; padding: 
 .screenshot-frame.floating {
   animation: mockupFloat 6s ease-in-out infinite;
   will-change: transform;
+  opacity: 0.6;
 }
 @keyframes mockupFloat {
   0%, 100% { transform: translateY(0); }
