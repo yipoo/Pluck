@@ -46,10 +46,28 @@
   </div>
 </nav>
 
-<!-- ============== Hero (cinematic dark + Vanta HALO 背景) ============== -->
+<!-- ============== Hero (cinematic dark + 视频/Vanta 多层背景) ============== -->
 <section class="hero hero-dark">
-  <!-- Vanta.js WebGL 动画背景 — 由 CDN 远程加载 + JS 初始化(见 footer 前) -->
+  <!-- 第 0 层:Vanta.js WebGL HALO 流光(永远存在,作为 video 加载失败的兜底) -->
   <div id="hero-bg" aria-hidden="true"></div>
+
+  <!--
+    第 1 层:视频背景(可选,文件存在时覆盖 Vanta)
+    - 文件放在 video/hero-bg.mp4(及可选 .webm)
+    - autoplay + muted + loop + playsinline 是浏览器允许自动播放的必备组合
+    - 不存在时浏览器会"安静失败",Vanta 自然透出 — 用户体验不破
+    - 详见 video/README.md 的下载步骤
+  -->
+  <video class="hero-video"
+         autoplay muted loop playsinline preload="auto"
+         poster="video/poster.jpg"
+         aria-hidden="true">
+    <source src="video/bg.webm" type="video/webm">
+    <source src="video/bg.mp4"  type="video/mp4">
+  </video>
+
+  <!-- 第 2 层:cinematic 蒙版(让 video 即使是亮色片段,文字仍可读) -->
+  <div class="hero-tint" aria-hidden="true"></div>
 
   <!-- 顶部渐隐遮罩,让 nav 区可读 -->
   <div class="hero-veil hero-veil-top" aria-hidden="true"></div>
@@ -423,10 +441,43 @@
       window.addEventListener('scroll', onScroll, { passive: true });
     }
 
+    // ===== 4. Hero 视频:reduced-motion 暂停 + 离开视口暂停省 CPU =====
+    function initHeroVideo() {
+      var video = document.querySelector('.hero-video');
+      if (!video) return;
+
+      // 用户偏好减少动画 → 直接暂停 + 隐藏(让 Vanta 透出)
+      if (prefersReduced) {
+        video.pause();
+        video.style.display = 'none';
+        return;
+      }
+
+      // 视频加载失败时,把元素隐掉,让 Vanta 透出来
+      video.addEventListener('error', function () {
+        console.warn('[Pluck] hero video failed to load, fallback to Vanta');
+        video.style.display = 'none';
+      }, { once: true });
+
+      // hero 滚出视口时暂停,滚回再播 — 省 CPU
+      if (!('IntersectionObserver' in window)) return;
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            video.play().catch(function () { /* autoplay 偶尔被浏览器拦,静默忽略 */ });
+          } else {
+            video.pause();
+          }
+        });
+      }, { threshold: 0.05 });
+      observer.observe(video);
+    }
+
     function boot() {
       initVanta();
       initReveal();
       initParallax();
+      initHeroVideo();
     }
 
     if (document.readyState === 'loading') {

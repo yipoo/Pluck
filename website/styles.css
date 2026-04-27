@@ -113,12 +113,41 @@ code { font-family: 'SF Mono', 'Menlo', monospace; font-size: 0.875em; padding: 
   pointer-events: none;   /* 鼠标穿透到内容 */
 }
 
+/* 视频背景层 — 在 Vanta 之上、内容之下 */
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;        /* 填充整块 hero,可能裁切边缘 */
+  object-position: center;
+  z-index: 1;
+  pointer-events: none;
+  /* cinematic 调色:略压暗 + 增饱和 + 微弱蓝调 */
+  filter: brightness(0.55) saturate(1.15) contrast(1.05);
+  /* 视频加载之前是 transparent,不会盖住下层 Vanta */
+}
+/* 视频文件不存在时(浏览器加载失败),video 元素会是 0 高度的盒子,自然显示底层 Vanta */
+
+/* Cinematic 蒙版 — 多层渐变,让任何亮度的视频都能让前景文字可读 */
+.hero-tint {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    /* 左下角加重(文字区) */
+    radial-gradient(ellipse at 25% 70%, rgba(2, 4, 12, 0.55) 0%, rgba(2, 4, 12, 0) 50%),
+    /* 整体压暗 + Pluck 蓝染色 */
+    linear-gradient(135deg, rgba(0, 102, 230, 0.18) 0%, rgba(2, 4, 12, 0.35) 100%);
+}
+
 /* 顶 / 底 渐隐遮罩,让 nav 区清爽 + 与下个 section 平滑衔接 */
 .hero-veil {
   position: absolute;
   left: 0; right: 0;
   height: 140px;
-  z-index: 1;
+  z-index: 3;        /* 在视频与蒙版之上,但在内容之下 */
   pointer-events: none;
 }
 .hero-veil-top {
@@ -131,10 +160,10 @@ code { font-family: 'SF Mono', 'Menlo', monospace; font-size: 0.875em; padding: 
   background: linear-gradient(0deg, var(--bg) 0%, rgba(2,4,10,0) 100%);
 }
 
-/* 内容栅格,在 vanta + veil 之上 */
+/* 内容栅格,在所有背景层之上 */
 .hero-inner {
   position: relative;
-  z-index: 2;
+  z-index: 10;
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
   gap: 60px;
@@ -186,7 +215,7 @@ code { font-family: 'SF Mono', 'Menlo', monospace; font-size: 0.875em; padding: 
   left: 50%;
   bottom: 36px;
   transform: translateX(-50%);
-  z-index: 2;
+  z-index: 10;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -254,6 +283,8 @@ code { font-family: 'SF Mono', 'Menlo', monospace; font-size: 0.875em; padding: 
   .reveal { opacity: 1; transform: none; transition: none; }
   .screenshot-frame.floating { animation: none; }
   .scroll-hint, .scroll-wheel { animation: none; }
+  /* 视频暂停 — 通过 JS 控制更可靠,这里也尝试一下 */
+  .hero-video { animation: none; }
 }
 
 .badge {
