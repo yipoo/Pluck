@@ -16,10 +16,12 @@ Icon?
 
 # Build output
 build/
+dist/
 *.app
 *.dmg
 *.pkg
 *.zip
+*.pbxproj.bak
 
 # IDE
 .vscode/
