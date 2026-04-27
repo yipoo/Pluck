@@ -4,24 +4,20 @@ import AppKit
 import ScreenCaptureKit
 
 /// 屏幕截图服务。基于 ScreenCaptureKit (macOS 12.3+,我们要求 14+)。
-/// 关键点:
-/// - 首次调用会触发"屏幕录制"权限请求(通过 SCShareableContent.current 触发)
-/// - 多显示器:rect 是相对于主显示器左上角的全局坐标
-/// - Retina:返回的 CGImage 是物理像素(已乘 backingScaleFactor)
 final class ScreenCaptureService {
 
     enum CaptureError: Error, LocalizedError {
         case permissionDenied
         case noDisplay
         case captureFailed(String)
-        case rectOutOfBounds
+        case displayNotFound
 
         var errorDescription: String? {
             switch self {
             case .permissionDenied: return "未授予屏幕录制权限"
             case .noDisplay: return "未找到任何显示器"
             case .captureFailed(let r): return "截屏失败:\(r)"
-            case .rectOutOfBounds: return "选区超出屏幕边界"
+            case .displayNotFound: return "选区所在显示器未找到"
             }
         }
     }
@@ -35,34 +31,31 @@ final class ScreenCaptureService {
         return try await capture(display: display, contentRect: nil)
     }
 
-    /// 抓指定全局矩形。坐标是 NSScreen 的"左上原点"(全局坐标)。
-    func captureRegion(rect: CGRect) async throws -> CGImage {
+    /// 抓指定显示器上的指定矩形。
+    /// - Parameter rect: 选区,**display-local 坐标**(top-left origin,相对该显示器)
+    /// - Parameter displayID: 物理显示器 ID(从 NSScreen.deviceDescription[NSScreenNumber])
+    func captureRegion(rect: CGRect, displayID: CGDirectDisplayID) async throws -> CGImage {
         let content = try await fetchSharedContent()
-        guard let display = displayContaining(rect: rect, in: content) else {
-            throw CaptureError.rectOutOfBounds
+        print("[Pluck] ScreenCaptureKit displays: \(content.displays.map { "id=\($0.displayID) frame=\($0.frame)" })")
+
+        // 严格按 displayID 匹配,匹配不到再降级用第一块
+        let display = content.displays.first(where: { $0.displayID == displayID })
+                   ?? content.displays.first
+        guard let display else { throw CaptureError.noDisplay }
+
+        if display.displayID != displayID {
+            print("[Pluck] WARN: requested displayID \(displayID) not found, falling back to \(display.displayID)")
+        } else {
+            print("[Pluck] capturing on display \(display.displayID), rect (display-local)=\(rect)")
         }
 
-        let displayFrame = CGRect(
-            x: CGFloat(display.frame.origin.x),
-            y: CGFloat(display.frame.origin.y),
-            width: CGFloat(display.width),
-            height: CGFloat(display.height)
-        )
-        let relRect = CGRect(
-            x: rect.origin.x - displayFrame.origin.x,
-            y: rect.origin.y - displayFrame.origin.y,
-            width: rect.width,
-            height: rect.height
-        )
-        return try await capture(display: display, contentRect: relRect)
+        return try await capture(display: display, contentRect: rect)
     }
 
-    /// 检查屏幕录制权限(不会弹窗)。
     func hasPermission() -> Bool {
         return CGPreflightScreenCaptureAccess()
     }
 
-    /// 主动请求权限(首次会弹系统对话框;授予后通常需要重启 App 生效)。
     @discardableResult
     func requestPermission() -> Bool {
         return CGRequestScreenCaptureAccess()
@@ -71,28 +64,25 @@ final class ScreenCaptureService {
     // MARK: - Internals
 
     private func fetchSharedContent() async throws -> SCShareableContent {
+        print("[Pluck] ScreenCaptureService.fetchSharedContent: hasPermission=\(hasPermission())")
         do {
-            return try await SCShareableContent.excludingDesktopWindows(false, onScreenWindowsOnly: true)
+            let content = try await SCShareableContent.excludingDesktopWindows(false, onScreenWindowsOnly: true)
+            print("[Pluck] SCShareableContent OK, displays=\(content.displays.count)")
+            return content
         } catch {
+            print("[Pluck] SCShareableContent ERROR: \(error)")
             throw CaptureError.permissionDenied
         }
-    }
-
-    private func displayContaining(rect: CGRect, in content: SCShareableContent) -> SCDisplay? {
-        for d in content.displays {
-            let f = CGRect(x: CGFloat(d.frame.origin.x),
-                           y: CGFloat(d.frame.origin.y),
-                           width: CGFloat(d.width),
-                           height: CGFloat(d.height))
-            if f.contains(rect.origin) { return d }
-        }
-        return content.displays.first
     }
 
     private func capture(display: SCDisplay, contentRect: CGRect?) async throws -> CGImage {
         let filter = SCContentFilter(display: display, excludingWindows: [])
         let cfg = SCStreamConfiguration()
-        let scale = CGFloat(NSScreen.main?.backingScaleFactor ?? 2.0)
+
+        // 用该显示器自己的 backingScaleFactor(多屏混合 Retina/普通 时关键)
+        let scale = NSScreen.screens
+            .first(where: { $0.pluckDisplayID == display.displayID })?
+            .backingScaleFactor ?? CGFloat(NSScreen.main?.backingScaleFactor ?? 2.0)
 
         if let r = contentRect {
             cfg.sourceRect = r
@@ -119,7 +109,6 @@ final class ScreenCaptureService {
 // MARK: - PNG helper
 
 extension CGImage {
-    /// 写入 PNG 到磁盘。返回是否成功。
     @discardableResult
     func writePNG(to url: URL) -> Bool {
         let rep = NSBitmapImageRep(cgImage: self)

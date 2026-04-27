@@ -249,6 +249,99 @@ final class Storage {
         }
     }
 
+    /// 删除单个 snapshot:同时删 db 行 + 磁盘 png + 缩略图缓存
+    /// 返回被删除的图片 URL,供调用方做缓存失效等
+    @discardableResult
+    func deleteSnapshot(id: UUID) throws -> URL? {
+        try queue.sync {
+            // 1. 取 image_path
+            var path: String?
+            do {
+                let getSql = "SELECT image_path FROM snapshots WHERE id = ?;"
+                let getStmt = try prepare(getSql)
+                defer { sqlite3_finalize(getStmt) }
+                bindText(getStmt, 1, id.uuidString)
+                if sqlite3_step(getStmt) == SQLITE_ROW {
+                    path = readText(getStmt, 0)
+                }
+            }
+            // 2. 删 db 行
+            do {
+                let delSql = "DELETE FROM snapshots WHERE id = ?;"
+                let delStmt = try prepare(delSql)
+                defer { sqlite3_finalize(delStmt) }
+                bindText(delStmt, 1, id.uuidString)
+                try step(delStmt)
+            }
+            // 3. 删磁盘文件
+            if let path {
+                let url = snapshotsDir.appendingPathComponent(path)
+                try? FileManager.default.removeItem(at: url)
+                return url
+            }
+            return nil
+        }
+    }
+
+    /// 限制 snapshot 总数:超 keep 的最旧条目删行 + 文件
+    /// 返回被删除文件的 URL 列表
+    @discardableResult
+    func enforceSnapshotLimit(keep: Int) throws -> [URL] {
+        try queue.sync {
+            // 1. 取要删的 image_path 列表
+            var pathsToDelete: [String] = []
+            do {
+                let sql = """
+                SELECT image_path FROM snapshots
+                ORDER BY created_at DESC
+                LIMIT -1 OFFSET ?;
+                """
+                let stmt = try prepare(sql)
+                defer { sqlite3_finalize(stmt) }
+                sqlite3_bind_int(stmt, 1, Int32(keep))
+                while sqlite3_step(stmt) == SQLITE_ROW {
+                    if let p = readText(stmt, 0) { pathsToDelete.append(p) }
+                }
+            }
+            // 2. 删 db 行
+            do {
+                let sql = """
+                DELETE FROM snapshots
+                WHERE id IN (
+                    SELECT id FROM snapshots
+                    ORDER BY created_at DESC
+                    LIMIT -1 OFFSET ?
+                );
+                """
+                let stmt = try prepare(sql)
+                defer { sqlite3_finalize(stmt) }
+                sqlite3_bind_int(stmt, 1, Int32(keep))
+                try step(stmt)
+            }
+            // 3. 删磁盘文件
+            var deletedURLs: [URL] = []
+            for p in pathsToDelete {
+                let url = snapshotsDir.appendingPathComponent(p)
+                try? FileManager.default.removeItem(at: url)
+                deletedURLs.append(url)
+            }
+            return deletedURLs
+        }
+    }
+
+    /// 清空所有 snapshots:db 全清 + 整个目录下所有 png 删除
+    func clearAllSnapshots() throws {
+        try queue.sync {
+            try execLocked("DELETE FROM snapshots;")
+            // 同时清磁盘
+            if let files = try? FileManager.default.contentsOfDirectory(at: snapshotsDir, includingPropertiesForKeys: nil) {
+                for url in files where url.pathExtension.lowercased() == "png" {
+                    try? FileManager.default.removeItem(at: url)
+                }
+            }
+        }
+    }
+
     /// 给定相对路径,返回截图缓存目录的完整 URL
     func snapshotURL(for relativePath: String) -> URL {
         snapshotsDir.appendingPathComponent(relativePath)

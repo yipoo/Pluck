@@ -28,9 +28,12 @@ final class HistoryWindowController {
         let hosting = NSHostingController(rootView: view)
 
         let win = NSWindow(contentViewController: hosting)
-        win.title = "Pluck — 历史"
-        win.setContentSize(NSSize(width: 720, height: 480))
-        win.styleMask = [.titled, .closable, .resizable, .miniaturizable]
+        win.title = "Pluck"
+        win.setContentSize(NSSize(width: 1100, height: 680))
+        win.minSize = NSSize(width: 900, height: 540)
+        win.styleMask = [.titled, .closable, .resizable, .miniaturizable, .fullSizeContentView]
+        win.titleVisibility = .visible
+        win.titlebarAppearsTransparent = false
         win.center()
         win.isReleasedWhenClosed = false
         win.identifier = NSUserInterfaceItemIdentifier("pluck.history.window")

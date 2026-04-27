@@ -10,8 +10,8 @@ struct RegionSelectionView: View {
     var body: some View {
         GeometryReader { _ in
             ZStack {
-                // 半透明黑色蒙层
-                Color.black.opacity(0.30)
+                // 半透明黑色蒙层 — 加深一些更明显
+                Color.black.opacity(0.40)
                     .contentShape(Rectangle())
 
                 if let s = startPoint, let c = currentPoint {
@@ -38,18 +38,20 @@ struct RegionSelectionView: View {
                 if startPoint == nil {
                     VStack(spacing: 4) {
                         Text("拖动选择区域 · ESC 取消")
-                            .font(.system(size: 13, weight: .medium))
+                            .font(.system(size: 14, weight: .medium))
                             .foregroundColor(.white)
                     }
-                    .padding(.horizontal, 14).padding(.vertical, 8)
-                    .background(Color.black.opacity(0.6))
-                    .clipShape(RoundedRectangle(cornerRadius: 6))
+                    .padding(.horizontal, 16).padding(.vertical, 10)
+                    .background(Color.black.opacity(0.7))
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
             }
             .gesture(
-                DragGesture(minimumDistance: 0)
+                // ⭐ minimumDistance: 5 — 防止单击穿透事件被当成"零像素拖动"误触发结束
+                DragGesture(minimumDistance: 5)
                     .onChanged { value in
                         if startPoint == nil {
+                            print("[Pluck] drag begin at \(value.startLocation)")
                             startPoint = value.startLocation
                         }
                         currentPoint = value.location
@@ -58,9 +60,12 @@ struct RegionSelectionView: View {
                         let s = startPoint ?? value.startLocation
                         let c = value.location
                         let r = Self.rect(s, c)
+                        print("[Pluck] drag end, rect=\(r)")
                         if r.width > 5 && r.height > 5 {
                             onComplete(r)
                         } else {
+                            // 极小拖动 — 当取消处理
+                            print("[Pluck] rect too small, treating as cancel")
                             onComplete(nil)
                         }
                     }

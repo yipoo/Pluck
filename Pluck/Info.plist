@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- 基本信息(Xcode 编译时会替换 $(...) 变量) -->
+    <key>CFBundleDevelopmentRegion</key>
+    <string>zh_CN</string>
+    <key>CFBundleDisplayName</key>
+    <string>Pluck</string>
+    <key>CFBundleExecutable</key>
+    <string>$(EXECUTABLE_NAME)</string>
+    <key>CFBundleIdentifier</key>
+    <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundleName</key>
+    <string>$(PRODUCT_NAME)</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleShortVersionString</key>
+    <string>0.1.0</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+
+    <!-- App 分类(Productivity 工具) -->
+    <key>LSApplicationCategoryType</key>
+    <string>public.app-category.productivity</string>
+
+    <!-- 注意:不写死 LSMinimumSystemVersion — 由 Xcode Build Settings 的 MACOSX_DEPLOYMENT_TARGET 自动注入,避免双源不一致 -->
+
+    <!-- ⭐ 关键:菜单栏 App,无 Dock 图标 -->
+    <key>LSUIElement</key>
+    <true/>
+
+    <!-- Retina -->
+    <key>NSHighResolutionCapable</key>
+    <true/>
+
+    <!-- 版权 -->
+    <key>NSHumanReadableCopyright</key>
+    <string>© 2026 dinglei. All rights reserved.</string>
+
+    <key>NSPrincipalClass</key>
+    <string>NSApplication</string>
+
+    <!-- ⭐⭐ 关键:屏幕录制权限说明,缺这条系统不会弹授权对话框 -->
+    <key>NSScreenCaptureUsageDescription</key>
+    <string>Pluck 需要屏幕录制权限以做截图 OCR。所有处理都在你的 Mac 本地完成,不会上传任何数据到云端。</string>
+
+    <!-- 通知权限说明(Onboarding 时请求) -->
+    <key>NSUserNotificationsUsageDescription</key>
+    <string>Pluck 在 OCR 完成后通过通知告知你识别字数。</string>
+
+    <!-- 优化退出体验 -->
+    <key>NSSupportsAutomaticTermination</key>
+    <true/>
+    <key>NSSupportsSuddenTermination</key>
+    <true/>
+</dict>
+</plist>

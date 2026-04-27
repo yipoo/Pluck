@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- 启用 App Sandbox(发布到 App Store 必需,Developer ID 分发也建议开) -->
+    <key>com.apple.security.app-sandbox</key>
+    <true/>
+
+    <!-- 允许 App 读写用户从对话框选择的文件(用于"在 Finder 显示截图"等) -->
+    <key>com.apple.security.files.user-selected.read-write</key>
+    <true/>
+
+    <!--
+    ⭐ 隐私优先 — 故意不申请的权限:
+        com.apple.security.network.client       (网络外联)
+        com.apple.security.network.server       (网络服务)
+        com.apple.security.device.audio-input   (麦克风)
+        com.apple.security.device.camera        (摄像头)
+        com.apple.security.personal-information.* (通讯录、日历、照片、位置)
+    一旦未来需要(如 v0.3 接入 LLM),再在此开启对应权限,
+    并在 README/隐私政策中明确告知用户。
+    -->
+</dict>
+</plist>

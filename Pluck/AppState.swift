@@ -26,6 +26,7 @@ final class AppState: ObservableObject {
     private let regionSelector = RegionSelectionController()
     private let historyWindow = HistoryWindowController()
     private let onboardingWindow = OnboardingWindowController()
+    private let flashController = CaptureFlashController()
 
     private var settingsCancellables: Set<AnyCancellable> = []
 
@@ -109,20 +110,38 @@ final class AppState: ObservableObject {
     // MARK: - Capture flow
 
     func captureRegion() async {
-        guard !isCapturing, isReady else { return }
+        print("[Pluck] captureRegion() called, isReady=\(isReady), isCapturing=\(isCapturing)")
+        guard !isCapturing, isReady else {
+            print("[Pluck] captureRegion early return: isReady=\(isReady), isCapturing=\(isCapturing)")
+            return
+        }
         isCapturing = true
         defer { isCapturing = false }
 
-        guard let screenCapture, let ocr, let storage else { return }
-
-        // 1. 弹出 overlay,等用户选区(top-left origin,主屏 CGDisplay 坐标)
-        guard let rect = await regionSelector.present() else {
-            return  // 用户取消,静默
+        guard let screenCapture, let ocr, let storage else {
+            print("[Pluck] captureRegion: services missing — screenCapture=\(screenCapture != nil), ocr=\(ocr != nil), storage=\(storage != nil)")
+            return
         }
 
+        // 关键:让菜单栏 popover 先关闭,再弹 overlay(避免焦点竞争)
+        try? await Task.sleep(for: .milliseconds(120))
+
+        // 1. 弹出 overlay,等用户选区(返回 selection 含 rect + 哪个显示器)
+        print("[Pluck] presenting region selector overlay…")
+        guard let selection = await regionSelector.present() else {
+            print("[Pluck] user cancelled overlay (or returned nil)")
+            return  // 用户取消,静默
+        }
+        print("[Pluck] user selected rect: \(selection.rect) on display=\(selection.displayID)")
+
         do {
-            // 2. 抓图
-            let image = try await screenCapture.captureRegion(rect: rect)
+            // 2. 抓图(传 displayID,确保多屏环境抓对屏幕)
+            print("[Pluck] calling ScreenCaptureService.captureRegion...")
+            let image = try await screenCapture.captureRegion(rect: selection.rect, displayID: selection.displayID)
+            print("[Pluck] got image \(image.width)x\(image.height)")
+
+            // 2b. 视觉反馈:被截区域闪一下白光(仿 macOS 原生)
+            flashController.flash(rect: selection.rect, displayID: selection.displayID)
 
             // 3. 落盘
             let filename = "\(UUID().uuidString).png"
@@ -130,8 +149,10 @@ final class AppState: ObservableObject {
             image.writePNG(to: url)
 
             // 4. OCR
+            print("[Pluck] running OCR…")
             let result = try await ocr.recognize(image: image)
             let text = result.text
+            print("[Pluck] OCR result: \(text.count) chars")
 
             // 5. 写剪贴板(带 ownWriteMarker,避免被自己监听到)
             if !text.isEmpty {
@@ -141,12 +162,18 @@ final class AppState: ObservableObject {
             // 6. 保存 snapshot 记录
             let snap = Snapshot(imagePath: filename, ocrText: text.isEmpty ? nil : text)
             try storage.insertSnapshot(snap)
+            // 6b. 强制总数上限,避免无限堆积
+            if let removed = try? storage.enforceSnapshotLimit(keep: settings.historyLimit) {
+                for url in removed { ThumbnailCache.shared.invalidate(url) }
+            }
 
-            // 7. 刷新 UI + 通知
+            // 7. 刷新 UI + 截图音效 + 通知
             refreshHistory()
+            playCaptureSound()
             NotificationService.ocrDone(charCount: text.count)
 
         } catch {
+            print("[Pluck] captureRegion ERROR: \(error)")
             lastError = error.localizedDescription
             NotificationService.error(error.localizedDescription)
         }
@@ -220,6 +247,28 @@ final class AppState: ObservableObject {
         historyWindow.present(state: self)
     }
 
+    /// 用户在 设置 → 关于 点 "重看欢迎页"
+    func showOnboardingAgain() {
+        onboardingWindow.present(state: self)
+    }
+
+    /// 截图完成后播放短音 — 仿 macOS 系统截图音效
+    /// 找不到 Grab.aiff 时降级到 "Pop"(macOS 内置音效)
+    private func playCaptureSound() {
+        let candidates = [
+            "/System/Library/Sounds/Grab.aiff",
+            "/System/Library/Components/CoreAudio.component/Contents/SharedSupport/SystemSounds/system/screen_capture.caf"
+        ]
+        for path in candidates where FileManager.default.fileExists(atPath: path) {
+            if let s = NSSound(contentsOfFile: path, byReference: true) {
+                s.play()
+                return
+            }
+        }
+        // 降级:Pop 是 macOS 标配,任何系统都有
+        NSSound(named: NSSound.Name("Pop"))?.play()
+    }
+
     // MARK: - Reuse: 复制历史条目回剪贴板
 
     func copyToClipboard(_ item: ClipboardItem) {
@@ -246,11 +295,46 @@ final class AppState: ObservableObject {
         }
     }
 
+    // MARK: - Snapshot management
+
+    func deleteSnapshot(_ snap: Snapshot) {
+        guard let storage else { return }
+        do {
+            let removedURL = try storage.deleteSnapshot(id: snap.id)
+            if let url = removedURL { ThumbnailCache.shared.invalidate(url) }
+            refreshHistory()
+        } catch {
+            lastError = error.localizedDescription
+        }
+    }
+
+    func copySnapshotImage(_ snap: Snapshot) {
+        guard let storage else { return }
+        let url = storage.snapshotURL(for: snap.imagePath)
+        guard let img = NSImage(contentsOf: url) else { return }
+        let pb = NSPasteboard.general
+        pb.clearContents()
+        pb.declareTypes([.tiff, ClipboardMonitor.ownWriteMarker], owner: nil)
+        pb.writeObjects([img])
+        pb.setString("", forType: ClipboardMonitor.ownWriteMarker)
+    }
+
+    func snapshotURL(_ snap: Snapshot) -> URL? {
+        storage?.snapshotURL(for: snap.imagePath)
+    }
+
     // MARK: - Privacy
 
     func clearAllClipboard() {
         guard let storage else { return }
         try? storage.clearAllClipboard()
+        refreshHistory()
+    }
+
+    func clearAllSnapshots() {
+        guard let storage else { return }
+        try? storage.clearAllSnapshots()
+        ThumbnailCache.shared.clearAll()
         refreshHistory()
     }
 }

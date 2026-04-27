@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- 不追踪用户 -->
+    <key>NSPrivacyTracking</key>
+    <false/>
+
+    <!-- 不与第三方广告 / 分析域名通信 -->
+    <key>NSPrivacyTrackingDomains</key>
+    <array/>
+
+    <!-- 不收集任何用户数据 -->
+    <key>NSPrivacyCollectedDataTypes</key>
+    <array/>
+
+    <!-- 声明使用的"需说明理由的 API"(Apple 2024 强制) -->
+    <key>NSPrivacyAccessedAPITypes</key>
+    <array>
+        <!-- 我们用 UserDefaults 存用户设置(热键、隐私偏好等) -->
+        <dict>
+            <key>NSPrivacyAccessedAPIType</key>
+            <string>NSPrivacyAccessedAPICategoryUserDefaults</string>
+            <key>NSPrivacyAccessedAPITypeReasons</key>
+            <array>
+                <!-- CA92.1 = "Access info available only to the app itself" -->
+                <string>CA92.1</string>
+            </array>
+        </dict>
+    </array>
+</dict>
+</plist>
