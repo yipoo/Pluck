@@ -54,6 +54,8 @@ final class RegionSelectionController {
             win.isOpaque = false
             win.backgroundColor = .clear
             win.hasShadow = false
+            // ⭐ 关键:不让 close() 自动释放,我们手动控制 — 否则可能在 NSApp 还引用时被释放
+            win.isReleasedWhenClosed = false
             win.collectionBehavior = [.canJoinAllSpaces, .stationary, .fullScreenAuxiliary, .ignoresCycle]
             win.acceptsMouseMovedEvents = true
             win.hidesOnDeactivate = false
@@ -104,10 +106,18 @@ final class RegionSelectionController {
             NSEvent.removeMonitor(monitor)
             keyMonitor = nil
         }
-        window?.orderOut(nil)
+
+        // ⭐ 关键:orderOut + close + nil 三连
+        // 单 orderOut 会让窗口"半死不活"留在 NSApp 列表里,后续 popover 重开遍历窗口时可能触碰野指针
+        // close() 会真正从 NSApp 列表移除;isReleasedWhenClosed=false → 我们仍持有强引用直到 nil 出
+        if let win = window {
+            win.orderOut(nil)
+            win.close()
+        }
         window = nil
 
-        NSApp.setActivationPolicy(.accessory)
+        // 不再从 finish 直接切回 .accessory — AppDelegate 的 willCloseNotification 观察者会统一处理
+        // 避免重复切换造成 NSApp 内部状态混乱
 
         if let rect {
             cont.resume(returning: CaptureSelection(rect: rect, displayID: activeDisplayID))
