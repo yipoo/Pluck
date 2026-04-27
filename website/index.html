@@ -46,10 +46,18 @@
   </div>
 </nav>
 
-<!-- ============== Hero ============== -->
-<section class="hero">
-  <div class="container">
-    <div class="hero-content">
+<!-- ============== Hero (cinematic dark + Vanta HALO 背景) ============== -->
+<section class="hero hero-dark">
+  <!-- Vanta.js WebGL 动画背景 — 由 CDN 远程加载 + JS 初始化(见 footer 前) -->
+  <div id="hero-bg" aria-hidden="true"></div>
+
+  <!-- 顶部渐隐遮罩,让 nav 区可读 -->
+  <div class="hero-veil hero-veil-top" aria-hidden="true"></div>
+  <!-- 底部渐隐遮罩,过渡到下面浅色区 -->
+  <div class="hero-veil hero-veil-bottom" aria-hidden="true"></div>
+
+  <div class="container hero-inner">
+    <div class="hero-content reveal" data-reveal-delay="0">
       <span class="badge">macOS 14+ · 仅 ¥98 买断</span>
       <h1>本地优先的<br>截图 OCR 与剪贴板</h1>
       <p class="lead">
@@ -72,8 +80,8 @@
       </div>
     </div>
 
-    <div class="hero-image">
-      <div class="screenshot-frame">
+    <div class="hero-image reveal" data-reveal-delay="160">
+      <div class="screenshot-frame floating">
         <div class="screenshot-titlebar">
           <span class="dot dot-red"></span>
           <span class="dot dot-yellow"></span>
@@ -89,6 +97,14 @@
       </div>
     </div>
   </div>
+
+  <!-- 滚动提示 -->
+  <div class="scroll-hint" aria-hidden="true">
+    <span class="scroll-mouse">
+      <span class="scroll-wheel"></span>
+    </span>
+    <span class="scroll-text">向下滚动</span>
+  </div>
 </section>
 
 <!-- ============== Features ============== -->
@@ -98,7 +114,7 @@
     <p class="section-sub">小而美 · 零依赖 · 终身可用</p>
 
     <div class="feature-grid">
-      <div class="feature-card">
+      <div class="feature-card reveal">
         <div class="feature-icon" style="background: rgba(0,122,255,0.13); color: #007aff;">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
             <rect x="3" y="3" width="18" height="18" rx="2"/>
@@ -109,7 +125,7 @@
         <p>按 ⌃⌥A 拖动选择,文字毫秒级识别并复制。中文 95%+ 准确率,基于 Apple Vision。</p>
       </div>
 
-      <div class="feature-card">
+      <div class="feature-card reveal">
         <div class="feature-icon" style="background: rgba(155,89,255,0.13); color: #9b59ff;">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
             <circle cx="12" cy="12" r="10"/>
@@ -120,7 +136,7 @@
         <p>过去复制的每一段文字、图片、文件,随时回看搜索。100 条全文搜索 &lt; 100ms。</p>
       </div>
 
-      <div class="feature-card">
+      <div class="feature-card reveal">
         <div class="feature-icon" style="background: rgba(52,199,89,0.13); color: #34c759;">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
             <rect x="3" y="11" width="18" height="11" rx="2"/>
@@ -131,7 +147,7 @@
         <p>OCR / 历史 / 截图全部在你的 Mac 上,默认不申请网络权限。律师 / 医生 / 财务可放心用。</p>
       </div>
 
-      <div class="feature-card">
+      <div class="feature-card reveal">
         <div class="feature-icon" style="background: rgba(255,149,0,0.13); color: #ff9500;">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
             <path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/>
@@ -141,7 +157,7 @@
         <p>零外部依赖,只用 Apple 原生框架。空闲态内存 &lt; 100MB,启动 &lt; 1.5 秒。</p>
       </div>
 
-      <div class="feature-card">
+      <div class="feature-card reveal">
         <div class="feature-icon" style="background: rgba(255,59,48,0.13); color: #ff3b30;">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
             <rect x="2" y="6" width="20" height="12" rx="2"/>
@@ -152,7 +168,7 @@
         <p>智能识别鼠标当前所在屏幕,正确处理 Retina 与外接显示器混合的复杂场景。</p>
       </div>
 
-      <div class="feature-card">
+      <div class="feature-card reveal">
         <div class="feature-icon" style="background: rgba(88,86,214,0.13); color: #5856d6;">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
@@ -169,7 +185,7 @@
 <section id="privacy" class="privacy">
   <div class="container">
     <div class="privacy-grid">
-      <div class="privacy-text">
+      <div class="privacy-text reveal">
         <span class="badge badge-green">隐私承诺</span>
         <h2>你的数据,从不离开 Mac</h2>
         <p>
@@ -186,7 +202,7 @@
           <li>沙盒 + Hardened Runtime + 公证</li>
         </ul>
       </div>
-      <div class="privacy-aside">
+      <div class="privacy-aside reveal" data-reveal-delay="200">
         <div class="privacy-card">
           <div class="privacy-stat">
             <div class="privacy-num">0</div>
@@ -212,7 +228,7 @@
     <h2 class="section-title">立即下载</h2>
     <p class="section-sub">macOS 14 (Sonoma) 及以上 · 已签名 · 已公证</p>
 
-    <div class="download-card">
+    <div class="download-card reveal">
       <div class="download-meta">
         <h3>Pluck 0.1.0</h3>
         <p class="version-meta">2026-06-21 发布 · 约 8 MB · DMG · 通用二进制(Apple Silicon + Intel)</p>
@@ -317,6 +333,109 @@
     </div>
   </div>
 </footer>
+
+<!-- ============================================== -->
+<!-- 动画:Vanta.js HALO + 滚动揭示 + Mockup 视差   -->
+<!-- ============================================== -->
+
+<!-- three.js + vanta(从 jsDelivr CDN 远程拉取,零打包依赖) -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.134.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.halo.min.js"></script>
+
+<script>
+  (function () {
+    'use strict';
+
+    var prefersReduced =
+      window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // ===== 1. Vanta HALO 背景 =====
+    function initVanta() {
+      if (prefersReduced || typeof VANTA === 'undefined' || !VANTA.HALO) return;
+      try {
+        VANTA.HALO({
+          el: '#hero-bg',
+          mouseControls: true,
+          touchControls: true,
+          gyroControls: false,
+          minHeight: 200.0,
+          minWidth: 200.0,
+          // Pluck brand 蓝
+          baseColor: 0x0066e6,
+          backgroundColor: 0x05080f,
+          amplitudeFactor: 1.4,
+          xOffset: 0.0,
+          yOffset: 0.0,
+          size: 1.5
+        });
+      } catch (e) {
+        console.warn('[Pluck] Vanta init failed:', e);
+      }
+    }
+
+    // ===== 2. Intersection Observer 滚动揭示 =====
+    function initReveal() {
+      var els = document.querySelectorAll('.reveal');
+      if (!els.length) return;
+
+      if (prefersReduced || !('IntersectionObserver' in window)) {
+        // 降级:直接显示
+        els.forEach(function (el) { el.classList.add('is-revealed'); });
+        return;
+      }
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var el = entry.target;
+          var delay = parseInt(el.getAttribute('data-reveal-delay') || '0', 10);
+          if (delay > 0) {
+            setTimeout(function () { el.classList.add('is-revealed'); }, delay);
+          } else {
+            el.classList.add('is-revealed');
+          }
+          observer.unobserve(el);
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+      els.forEach(function (el) { observer.observe(el); });
+    }
+
+    // ===== 3. Hero mockup 视差(作用在外层 .hero-image,内层 .screenshot-frame 仍然能浮动) =====
+    function initParallax() {
+      if (prefersReduced) return;
+      var wrap = document.querySelector('.hero-image');
+      if (!wrap) return;
+
+      var ticking = false;
+      function onScroll() {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(function () {
+          var y = window.scrollY;
+          // 滚动 1px,wrap 上移 0.18px(慢于页面)
+          var translateY = -Math.min(y * 0.18, 80);
+          wrap.style.transform = 'translateY(' + translateY + 'px)';
+          ticking = false;
+        });
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+    }
+
+    function boot() {
+      initVanta();
+      initReveal();
+      initParallax();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', boot);
+    } else {
+      boot();
+    }
+  })();
+</script>
 
 </body>
 </html>

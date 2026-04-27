@@ -75,7 +75,7 @@ code { font-family: 'SF Mono', 'Menlo', monospace; font-size: 0.875em; padding: 
 .nav-links a { color: var(--text-soft); }
 .nav-links a:hover { color: var(--text); opacity: 1; }
 
-/* ===== Hero ===== */
+/* ===== Hero (默认浅色版本,作为兜底) ===== */
 .hero {
   padding: 80px 0 100px;
   background: linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 100%);
@@ -91,6 +91,169 @@ code { font-family: 'SF Mono', 'Menlo', monospace; font-size: 0.875em; padding: 
 }
 @media (max-width: 880px) {
   .hero .container { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+}
+
+/* ============== Hero — Cinematic Dark + Vanta ============== */
+
+.hero-dark {
+  /* 深色基底,Vanta WebGL canvas 会覆盖在这上 */
+  background: radial-gradient(ellipse at top, #0e1424 0%, #050810 60%, #02040a 100%);
+  color: white;
+  min-height: 720px;
+  padding: 140px 0 160px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Vanta canvas 容器 — 绝对定位铺满,在内容下层 */
+#hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;   /* 鼠标穿透到内容 */
+}
+
+/* 顶 / 底 渐隐遮罩,让 nav 区清爽 + 与下个 section 平滑衔接 */
+.hero-veil {
+  position: absolute;
+  left: 0; right: 0;
+  height: 140px;
+  z-index: 1;
+  pointer-events: none;
+}
+.hero-veil-top {
+  top: 0;
+  background: linear-gradient(180deg, rgba(2,4,10,0.85) 0%, rgba(2,4,10,0) 100%);
+}
+.hero-veil-bottom {
+  bottom: 0;
+  height: 180px;
+  background: linear-gradient(0deg, var(--bg) 0%, rgba(2,4,10,0) 100%);
+}
+
+/* 内容栅格,在 vanta + veil 之上 */
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 60px;
+  align-items: center;
+}
+@media (max-width: 880px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+  .hero-dark { padding: 100px 0 120px; min-height: 640px; }
+}
+
+/* 深色版的文本 / badge / meta */
+.hero-dark h1 {
+  color: white;
+  text-shadow: 0 4px 30px rgba(0, 102, 230, 0.25);
+}
+.hero-dark .lead {
+  color: rgba(255, 255, 255, 0.82);
+}
+.hero-dark .lead strong { color: white; }
+.hero-dark .hero-meta { color: rgba(255, 255, 255, 0.55); }
+
+.hero-dark .badge {
+  background: rgba(78, 168, 255, 0.16);
+  color: #79b6ff;
+  border: 1px solid rgba(78, 168, 255, 0.30);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.hero-dark .btn-ghost {
+  color: white;
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.hero-dark .btn-ghost:hover { background: rgba(255, 255, 255, 0.10); }
+
+.hero-dark .btn-primary {
+  box-shadow:
+    0 1px 2px rgba(0,0,0,.3),
+    0 8px 24px rgba(0, 102, 230, 0.55),
+    0 0 0 1px rgba(78, 168, 255, 0.30) inset;
+}
+
+/* 滚动提示(底部小鼠标 icon) */
+.scroll-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 36px;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+  animation: scrollHintFloat 2.4s ease-in-out infinite;
+}
+.scroll-mouse {
+  width: 22px; height: 34px;
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  border-radius: 12px;
+  position: relative;
+}
+.scroll-wheel {
+  position: absolute;
+  left: 50%;
+  top: 6px;
+  width: 2px; height: 6px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 1px;
+  transform: translateX(-50%);
+  animation: scrollWheel 1.8s ease-in-out infinite;
+}
+@keyframes scrollWheel {
+  0%   { transform: translate(-50%, 0); opacity: 1; }
+  60%  { transform: translate(-50%, 14px); opacity: 0; }
+  100% { transform: translate(-50%, 0); opacity: 0; }
+}
+@keyframes scrollHintFloat {
+  0%, 100% { transform: translate(-50%, 0); }
+  50%      { transform: translate(-50%, 4px); }
+}
+@media (max-width: 880px) {
+  .scroll-hint { display: none; }
+}
+
+/* Mockup 浮动 — 上下微动,营造"活"的感觉 */
+.screenshot-frame.floating {
+  animation: mockupFloat 6s ease-in-out infinite;
+  will-change: transform;
+}
+@keyframes mockupFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+/* 滚动揭示 — 内容区共用 */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.reveal.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 用户偏好"减少动画"时全部降级 */
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .screenshot-frame.floating { animation: none; }
+  .scroll-hint, .scroll-wheel { animation: none; }
 }
 
 .badge {
@@ -158,7 +321,10 @@ code { font-family: 'SF Mono', 'Menlo', monospace; font-size: 0.875em; padding: 
   background: linear-gradient(135deg, #1a1d24, #0a0d14);
   border-radius: 14px;
   overflow: hidden;
-  box-shadow: var(--shadow-lg);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.08) inset,
+    0 8px 32px rgba(0, 102, 230, 0.30);
   aspect-ratio: 16 / 10;
   position: relative;
 }
