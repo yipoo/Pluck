@@ -1,8 +1,24 @@
 # Roadmap — Pluck MVP 8 周冲刺
 
 **目标**:8 周(2 个月)从 0 到 v0.1.0 内测发布
-**起点**:2026-04-26(本周即 W1)
+**起点**:2026-04-26
 **预计 v0.1.0 发布日**:2026-06-21
+
+---
+
+## 📊 进度同步(2026-04-27 更新)
+
+| Sprint | Week | 状态 | 说明 |
+|--------|------|------|------|
+| 0 — 调研 + 立项 | — | ✅ | MARKET_RESEARCH.md + PRD/TECH/ROADMAP/SETUP |
+| 1 — 骨架 + 系统集成 | W1-W2 | ✅ | MenuBarExtra + Carbon HotKey + ScreenCaptureKit 全打通 |
+| 2 — OCR 主链路 | W3-W4 | ✅ | RegionSelectionOverlay + Vision OCR + 剪贴板 + Snapshot 持久化 |
+| 3 — 剪贴板 + 设置 | W5-W6 | ✅ | NSPasteboard 轮询 + SQLite3 + 历史搜索 + 4 Tab 设置面板 |
+| 4 — 打磨 + 发布 | W7-W8 | 🚧 | **代码已就绪**;Xcode App Target / 签名 / 公证 / DMG / 官网 / 内测 — **需用户操作**(详见 [HANDOFF.md](../HANDOFF.md)) |
+
+**当前可立即验证**:`swift build` 干净 / `swift test` 13/13 通过 / `swift run Pluck` 能启动菜单栏 App。
+
+> 实际进度领先于"日历周"节奏 — 下面的 Sprint 1-3 任务清单**全部完成**;Sprint 4 的代码部分(Onboarding / 设置 / 隐私清单数据)也已完成,剩下都是 Xcode 工程化与人工流程。
 
 ---
 

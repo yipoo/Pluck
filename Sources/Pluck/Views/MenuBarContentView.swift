@@ -1,10 +1,11 @@
 import SwiftUI
+import AppKit
 
 struct MenuBarContentView: View {
     @EnvironmentObject var state: AppState
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 6) {
             HStack {
                 Image(systemName: "camera.viewfinder")
                 Text("Pluck")
@@ -18,31 +19,30 @@ struct MenuBarContentView: View {
             Divider()
 
             Button {
+                NSApp.activate(ignoringOtherApps: true)
                 Task { await state.captureRegion() }
             } label: {
-                HStack {
-                    Image(systemName: "selection.pin.in.out")
-                    Text("区域截图 + OCR")
-                    Spacer()
-                    Text(state.settings.captureRegionHotkey.displayString)
-                        .foregroundStyle(.secondary)
-                }
+                row(icon: "selection.pin.in.out",
+                    label: "区域截图 + OCR",
+                    hint: state.settings.captureRegionHotkey.displayString)
             }
-            .disabled(state.isCapturing)
+            .disabled(state.isCapturing || !state.isReady)
             .buttonStyle(.plain)
 
             Button {
-                // TODO W5:打开 HistoryView
+                state.openHistory()
             } label: {
-                HStack {
-                    Image(systemName: "clock.arrow.circlepath")
-                    Text("剪贴板历史")
-                    Spacer()
-                    Text(state.settings.toggleHistoryHotkey.displayString)
-                        .foregroundStyle(.secondary)
-                }
+                row(icon: "clock.arrow.circlepath",
+                    label: "剪贴板历史",
+                    hint: state.settings.toggleHistoryHotkey.displayString)
             }
+            .disabled(!state.isReady)
             .buttonStyle(.plain)
+
+            Divider()
+
+            // 状态行
+            statusLine
 
             Divider()
 
@@ -54,7 +54,7 @@ struct MenuBarContentView: View {
 
                 Spacer()
 
-                Button("退出") {
+                Button("退出 Pluck") {
                     NSApplication.shared.terminate(nil)
                 }
                 .keyboardShortcut("q")
@@ -64,10 +64,43 @@ struct MenuBarContentView: View {
                 Text(err)
                     .font(.caption)
                     .foregroundStyle(.red)
+                    .lineLimit(2)
             }
         }
         .padding(12)
-        .frame(width: 280)
+        .frame(width: 300)
+    }
+
+    @ViewBuilder
+    private func row(icon: String, label: String, hint: String) -> some View {
+        HStack(spacing: 8) {
+            Image(systemName: icon)
+                .frame(width: 18)
+            Text(label)
+            Spacer()
+            Text(hint)
+                .font(.caption.monospaced())
+                .foregroundStyle(.secondary)
+        }
+        .contentShape(Rectangle())
+        .padding(.vertical, 2)
+    }
+
+    @ViewBuilder
+    private var statusLine: some View {
+        HStack(spacing: 6) {
+            Circle()
+                .fill(state.isReady ? Color.green : Color.orange)
+                .frame(width: 7, height: 7)
+            Text(state.isReady ? "服务就绪 · 历史 \(state.clipboardHistory.count) 条" : "正在启动…")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            Spacer()
+            if state.isCapturing {
+                ProgressView()
+                    .controlSize(.mini)
+            }
+        }
     }
 }
 
