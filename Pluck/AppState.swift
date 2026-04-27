@@ -1,6 +1,7 @@
 import Foundation
 import Combine
 import AppKit
+import AudioToolbox
 
 /// 全局可观察状态。持有 service 实例并暴露给 UI。
 @MainActor
@@ -284,21 +285,31 @@ final class AppState: ObservableObject {
         )
     }
 
-    /// 截图完成后播放短音 — 仿 macOS 系统截图音效
-    /// 找不到 Grab.aiff 时降级到 "Pop"(macOS 内置音效)
-    private func playCaptureSound() {
+    /// 缓存的 SystemSoundID(避免每次 alloc + 触发 audioanalyticsd 警告)
+    private static var captureSoundID: SystemSoundID = {
+        // NSSound 在 sandbox 下会尝试连 com.apple.audioanalyticsd 触发 PRECONDITION FAILURE
+        // 改用 AudioToolbox 的 AudioServices,走更底层路径,不打分析点
         let candidates = [
             "/System/Library/Sounds/Grab.aiff",
-            "/System/Library/Components/CoreAudio.component/Contents/SharedSupport/SystemSounds/system/screen_capture.caf"
+            "/System/Library/Sounds/Pop.aiff",
+            "/System/Library/Sounds/Tink.aiff"
         ]
         for path in candidates where FileManager.default.fileExists(atPath: path) {
-            if let s = NSSound(contentsOfFile: path, byReference: true) {
-                s.play()
-                return
+            let url = URL(fileURLWithPath: path) as CFURL
+            var id: SystemSoundID = 0
+            if AudioServicesCreateSystemSoundID(url, &id) == kAudioServicesNoError {
+                return id
             }
         }
-        // 降级:Pop 是 macOS 标配,任何系统都有
-        NSSound(named: NSSound.Name("Pop"))?.play()
+        return 0
+    }()
+
+    /// 截图完成后播放短音 — 仿 macOS 系统截图音效。
+    /// AudioServices 路径不触发 audioanalyticsd 上报。
+    private func playCaptureSound() {
+        let id = Self.captureSoundID
+        guard id != 0 else { return }
+        AudioServicesPlaySystemSound(id)
     }
 
     // MARK: - Reuse: 复制历史条目回剪贴板

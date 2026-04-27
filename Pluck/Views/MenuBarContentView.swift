@@ -3,6 +3,7 @@ import AppKit
 
 struct MenuBarContentView: View {
     @EnvironmentObject var state: AppState
+    @Environment(\.openSettings) private var openSettings
     @State private var hover: HoverID?
 
     private enum HoverID: Hashable {
@@ -264,10 +265,17 @@ struct MenuBarContentView: View {
 
     private var footer: some View {
         HStack(spacing: 4) {
-            SettingsLink {
+            // ⚠️ 不用 SettingsLink — LSUIElement App + MenuBarExtra .window 模式下哑火
+            // 改用 openSettings 环境值 + 显式激活 App
+            Button {
+                NSApp.setActivationPolicy(.regular)   // 让设置窗口能正常获取焦点
+                NSApp.activate(ignoringOtherApps: true)
+                openSettings()
+            } label: {
                 footerCell(symbol: "gearshape", text: "设置", id: .settings)
             }
             .buttonStyle(.plain)
+            .keyboardShortcut(",", modifiers: .command)
 
             Spacer()
 
