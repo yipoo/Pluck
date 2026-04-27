@@ -14,11 +14,16 @@
 | 1 — 骨架 + 系统集成 | W1-W2 | ✅ | MenuBarExtra + Carbon HotKey + ScreenCaptureKit 全打通 |
 | 2 — OCR 主链路 | W3-W4 | ✅ | RegionSelectionOverlay + Vision OCR + 剪贴板 + Snapshot 持久化 |
 | 3 — 剪贴板 + 设置 | W5-W6 | ✅ | NSPasteboard 轮询 + SQLite3 + 历史搜索 + 4 Tab 设置面板 |
-| 4 — 打磨 + 发布 | W7-W8 | 🚧 | **代码已就绪**;Xcode App Target / 签名 / 公证 / DMG / 官网 / 内测 — **需用户操作**(详见 [HANDOFF.md](../HANDOFF.md)) |
+| 4 — 打磨 + 工程化 | W7-W8 | ✅ | Xcode App Target / Info.plist / entitlements / PrivacyInfo / AppIcon / DMG 脚本 / 公证编排 / 官网 / CI |
+| 4-Bonus — UX 打磨 | — | ✅ | 截图视觉反馈 / 截图音效 / 多屏路由 / 动态菜单栏图标 / 全栈 UI 重做 |
+| 5 — v0.2 提前实现 | — | ✅ | 标注画布(矩/箭/高亮/文本 + 撤销重做 + 导出)/ 长截图(实验性,ImageStitcher 算法) |
 
-**当前可立即验证**:`swift build` 干净 / `swift test` 13/13 通过 / `swift run Pluck` 能启动菜单栏 App。
+**剩余仅外部依赖**:
+- 用户公证(`xcrun notarytool store-credentials` 一次性配)
+- Sparkle SPM 依赖(Xcode UI 几次点击,见 docs/SPARKLE.md)
+- 域名 / 商标 / 公司主体(用户业务侧)
 
-> 实际进度领先于"日历周"节奏 — 下面的 Sprint 1-3 任务清单**全部完成**;Sprint 4 的代码部分(Onboarding / 设置 / 隐私清单数据)也已完成,剩下都是 Xcode 工程化与人工流程。
+**当前可立即验证**:Xcode ⌘B 干净,⌘R 即跑;13 单测全绿;`./scripts/build-dmg.sh` 出 DMG。详见 [CHANGELOG.md](CHANGELOG.md)。
 
 ---
 

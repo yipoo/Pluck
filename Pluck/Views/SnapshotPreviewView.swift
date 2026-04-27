@@ -11,6 +11,7 @@ struct SnapshotPreviewView: View {
 
     @State private var nsImage: NSImage?
     @State private var showDeleteConfirm = false
+    @State private var showAnnotateSheet = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -39,6 +40,13 @@ struct SnapshotPreviewView: View {
                     copyImage()
                 } label: {
                     Label("复制图片", systemImage: "photo")
+                }
+                .disabled(nsImage == nil)
+
+                Button {
+                    showAnnotateSheet = true
+                } label: {
+                    Label("标注…", systemImage: "pencil.tip.crop.circle")
                 }
                 .disabled(nsImage == nil)
 
@@ -90,6 +98,12 @@ struct SnapshotPreviewView: View {
             }
         } message: {
             Text("将同时删除磁盘文件,不可撤销。")
+        }
+        .sheet(isPresented: $showAnnotateSheet) {
+            AnnotationEditorView(
+                imageURL: imageURL,
+                onClose: { showAnnotateSheet = false }
+            )
         }
     }
 

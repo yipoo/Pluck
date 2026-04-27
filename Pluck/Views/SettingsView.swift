@@ -164,6 +164,16 @@ private struct GeneralTab: View {
                                 in: 20...1000, step: 20)
                             .frame(width: 130)
                     }
+
+                    SettingRow(icon: "arrow.triangle.2.circlepath",
+                               iconColor: .teal,
+                               title: "检查软件更新",
+                               subtitle: "向官网核对最新版本(用户主动触发)") {
+                        Button("检查更新") {
+                            UpdaterService.shared.checkForUpdates()
+                        }
+                        .controlSize(.small)
+                    }
                 }
                 .formStyle(.grouped)
                 .scrollDisabled(true)

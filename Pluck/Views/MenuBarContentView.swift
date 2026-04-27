@@ -6,7 +6,7 @@ struct MenuBarContentView: View {
     @State private var hover: HoverID?
 
     private enum HoverID: Hashable {
-        case capture, history, settings, quit
+        case capture, history, longCapture, settings, quit
         case recent(UUID)
     }
 
@@ -109,6 +109,19 @@ struct MenuBarContentView: View {
                 disabled: !state.isReady
             ) {
                 state.openHistory()
+            }
+
+            actionRow(
+                id: .longCapture,
+                symbol: "rectangle.stack.fill",
+                tint: .orange,
+                title: "长截图(实验性)",
+                subtitle: "拼接连续滚动屏 → 长图",
+                shortcut: "—",
+                disabled: !state.isReady
+            ) {
+                NSApp.activate(ignoringOtherApps: true)
+                Task { await state.startLongCapture() }
             }
         }
         .padding(.horizontal, 6)

@@ -1,0 +1,79 @@
+name: Release
+
+# 推 tag 触发,如:git tag v0.1.0 && git push origin v0.1.0
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: '版本号(如 0.1.0)'
+        required: true
+
+jobs:
+  build-dmg:
+    name: Build & Package DMG
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Determine version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "version=${{ inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            VERSION="${GITHUB_REF#refs/tags/v}"
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Install create-dmg
+        run: brew install create-dmg
+
+      # ⚠️ 公测要"Developer ID 签名 + 公证"才能给外部用户。
+      # 在仓库 Secrets 配置:
+      #   APPLE_DEVELOPER_ID_P12_BASE64   (.p12 证书 base64)
+      #   APPLE_DEVELOPER_ID_P12_PASSWORD
+      #   APPLE_NOTARY_USER               (your@apple.id)
+      #   APPLE_NOTARY_TEAM_ID            (CX3VYP5JYR)
+      #   APPLE_NOTARY_PASSWORD           (app-specific-password)
+      # 然后取消下面 import-codesign-certs 的注释。
+
+      # - name: Import signing certificate
+      #   uses: apple-actions/import-codesign-certs@v3
+      #   with:
+      #     p12-file-base64: ${{ secrets.APPLE_DEVELOPER_ID_P12_BASE64 }}
+      #     p12-password: ${{ secrets.APPLE_DEVELOPER_ID_P12_PASSWORD }}
+
+      - name: Build Release
+        run: |
+          chmod +x scripts/build-dmg.sh
+          ./scripts/build-dmg.sh
+
+      # - name: Notarize DMG
+      #   run: |
+      #     xcrun notarytool submit \
+      #       "dist/Pluck-${{ steps.version.outputs.version }}.dmg" \
+      #       --apple-id "${{ secrets.APPLE_NOTARY_USER }}" \
+      #       --team-id "${{ secrets.APPLE_NOTARY_TEAM_ID }}" \
+      #       --password "${{ secrets.APPLE_NOTARY_PASSWORD }}" \
+      #       --wait
+      #     xcrun stapler staple "dist/Pluck-${{ steps.version.outputs.version }}.dmg"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Pluck-${{ steps.version.outputs.version }}
+          path: dist/*.dmg
+          retention-days: 30
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.dmg
+          generate_release_notes: true
+          draft: true   # 默认建草稿,你审一遍再发布

@@ -27,6 +27,8 @@ final class AppState: ObservableObject {
     private let historyWindow = HistoryWindowController()
     private let onboardingWindow = OnboardingWindowController()
     private let flashController = CaptureFlashController()
+    private let longCaptureController = LongCaptureController()
+    private var longCaptureSession: LongCaptureSession?
 
     private var settingsCancellables: Set<AnyCancellable> = []
 
@@ -250,6 +252,36 @@ final class AppState: ObservableObject {
     /// 用户在 设置 → 关于 点 "重看欢迎页"
     func showOnboardingAgain() {
         onboardingWindow.present(state: self)
+    }
+
+    // MARK: - 长截图(实验性 v0.2)
+
+    func startLongCapture() async {
+        guard isReady, let captureService = screenCapture, let storage else { return }
+        guard let selection = await regionSelector.present() else { return }
+
+        let session = LongCaptureSession(captureService: captureService)
+        self.longCaptureSession = session
+
+        longCaptureController.start(
+            rect: selection.rect,
+            displayID: selection.displayID,
+            session: session,
+            onFinish: { [weak self] stitched in
+                guard let self else { return }
+                let filename = "long-\(UUID().uuidString).png"
+                let url = storage.snapshotURL(for: filename)
+                stitched.writePNG(to: url)
+                let snap = Snapshot(imagePath: filename, ocrText: nil)
+                try? storage.insertSnapshot(snap)
+                self.refreshHistory()
+                NotificationService.ocrDone(charCount: 0)
+                self.longCaptureSession = nil
+            },
+            onCancel: { [weak self] in
+                self?.longCaptureSession = nil
+            }
+        )
     }
 
     /// 截图完成后播放短音 — 仿 macOS 系统截图音效

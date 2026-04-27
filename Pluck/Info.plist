@@ -56,5 +56,24 @@
     <true/>
     <key>NSSupportsSuddenTermination</key>
     <true/>
+
+    <!-- ============== Sparkle 自动更新 ============== -->
+    <!-- 集成步骤见 docs/SPARKLE.md。SUPublicEDKey 通过 generate_keys 生成后填进去。 -->
+
+    <!-- appcast.xml 的 URL,部署到自有 CDN -->
+    <key>SUFeedURL</key>
+    <string>https://pluck.app/appcast.xml</string>
+
+    <!-- EdDSA 公钥(generate_keys 生成,只填公钥的那串 base64) -->
+    <key>SUPublicEDKey</key>
+    <string>__PASTE_ED_PUBLIC_KEY_HERE__</string>
+
+    <!-- 默认不自动检查 — 隐私优先,用户主动点 "检查更新" 才发请求 -->
+    <key>SUEnableAutomaticChecks</key>
+    <false/>
+
+    <!-- Sandbox 下的 Sparkle 安全策略 -->
+    <key>SUEnableInstallerLauncherService</key>
+    <false/>
 </dict>
 </plist>
