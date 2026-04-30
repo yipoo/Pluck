@@ -420,8 +420,8 @@ swift store/generate-screenshots.swift
 
 ### 不需要的尺寸
 
-- iOS 屏幕(iPhone / iPad)— 我们只发 macOS 版,iOS 标签 unchecked
-- Apple TV / Watch — N/A
+1. iOS 屏幕(iPhone / iPad)— 我们只发 macOS 版,iOS 标签 unchecked
+2. Apple TV / Watch — N/A
 
 ---
 
@@ -432,11 +432,11 @@ App Preview 必须是**实机录屏**,不能用我们生成的 marketing 图。
 **强烈建议先发不带 App Preview 的版本**,后续 v0.2 时补充。
 
 如果一定要做:
-- 时长:15-30 秒
-- 格式:H.264 MP4
-- 尺寸:同截图(每个分辨率一份)
-- 内容建议:截图 OCR 一气呵成的 demo
-- 录屏工具:macOS 内置 ⌘⇧5 → 选录制全屏 → 选择麦克风 None
+1. 时长:15-30 秒
+2. 格式:H.264 MP4
+3. 尺寸:同截图(每个分辨率一份)
+4. 内容建议:截图 OCR 一气呵成的 demo
+5. 录屏工具:macOS 内置 ⌘⇧5 → 选录制全屏 → 选择麦克风 None
 
 ---
 
@@ -458,18 +458,18 @@ App Preview 必须是**实机录屏**,不能用我们生成的 marketing 图。
 
 按这个顺序在 App Store Connect 操作:
 
-- [ ] 注册 Apple Developer Program ($99/年)
-- [ ] 在 ASC "我的 App" → 新增 → macOS App
-- [ ] 填 §1 App Information(基础信息一次性)
-- [ ] 填 §2 Pricing & Availability
-- [ ] 填 §3 App Privacy(隐私问卷 + 政策 URL)
-- [ ] 创建 v0.1.0 版本
-- [ ] 上传截图(Xcode → Archive → Distribute → App Store Connect)
-- [ ] 填 §4 描述 / 关键词 / 更新说明 / URL
-- [ ] §4.7 - 4.9 联系信息 / 审核员留言
-- [ ] §5 截图(从 store/screenshots/ 拖到对应尺寸)
-- [ ] **Submit for Review**
-- [ ] 等待 1-3 天审核(中国区有时 1 周)
+1. [ ] 注册 Apple Developer Program ($99/年)
+2. [ ] 在 ASC "我的 App" → 新增 → macOS App
+3. [ ] 填 §1 App Information(基础信息一次性)
+4. [ ] 填 §2 Pricing & Availability
+5. [ ] 填 §3 App Privacy(隐私问卷 + 政策 URL)
+6. [ ] 创建 v0.1.0 版本
+7. [ ] 上传截图(Xcode → Archive → Distribute → App Store Connect)
+8. [ ] 填 §4 描述 / 关键词 / 更新说明 / URL
+9. [ ] §4.7 - 4.9 联系信息 / 审核员留言
+10. [ ] §5 截图(从 store/screenshots/ 拖到对应尺寸)
+11. [ ] **Submit for Review**
+12. [ ] 等待 1-3 天审核(中国区有时 1 周)
 
 如被拒:看 Resolution Center 给的 guideline 编号 → 改完重新提交。
 

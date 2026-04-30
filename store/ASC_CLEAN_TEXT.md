@@ -61,12 +61,12 @@ Pluck 是一款 macOS 上的隐私优先截图 OCR 与剪贴板套件。
 
 核心功能
 
-- 全局热键 Control + Option + A 区域截图,基于 Apple Vision 自动识别中英文文字并复制到剪贴板
-- 全局热键 Control + Option + V 打开剪贴板历史,所有复制过的文本、图片、文件随时回查
-- 多屏识别,智能找到鼠标当前所在屏幕,Retina 加外接显示器混合环境正确处理
-- 截图标注,矩形 / 箭头 / 高亮 / 文本,带调色板,支持撤销重做与一键导出 PNG
-- 长截图(实验性),滚动捕获多屏内容,自动拼接成一张长图
-- 完整剪贴板历史,LIKE 模糊搜索支持中英文,100 条结果在 100 毫秒内返回
+1. 全局热键 Control + Option + A 区域截图,基于 Apple Vision 自动识别中英文文字并复制到剪贴板
+2. 全局热键 Control + Option + V 打开剪贴板历史,所有复制过的文本、图片、文件随时回查
+3. 多屏识别,智能找到鼠标当前所在屏幕,Retina 加外接显示器混合环境正确处理
+4. 截图标注,矩形 / 箭头 / 高亮 / 文本,带调色板,支持撤销重做与一键导出 PNG
+5. 长截图(实验性),滚动捕获多屏内容,自动拼接成一张长图
+6. 完整剪贴板历史,LIKE 模糊搜索支持中英文,100 条结果在 100 毫秒内返回
 
 为什么是 Pluck
 
@@ -87,19 +87,19 @@ Pluck 是一款 macOS 上的隐私优先截图 OCR 与剪贴板套件。
 
 适合人群
 
-- 知识工作者、产品经理、设计师,每天截图 OCR 复制粘贴 30 次以上
-- 律师、医生、财务、合规、政府,处理敏感文档,云端 OCR 不可用
-- 学生、研究者、跨境从业者,文献 OCR、长截图归档
-- Mac 重度用户,替代海外不本地化的同类工具
+1. 知识工作者、产品经理、设计师,每天截图 OCR 复制粘贴 30 次以上
+2. 律师、医生、财务、合规、政府,处理敏感文档,云端 OCR 不可用
+3. 学生、研究者、跨境从业者,文献 OCR、长截图归档
+4. Mac 重度用户,替代海外不本地化的同类工具
 
 技术细节
 
-- OCR 引擎:Apple Vision(系统级,免费,中文 95% 以上准确率)
-- 全局热键:Carbon HotKey API(无需辅助功能权限)
-- 剪贴板监听:NSPasteboard 0.5 秒轮询,跳过敏感内容标记
-- 数据库:SQLite3(本地,默认 100 条历史,可在设置调到 1000)
-- 渲染:SwiftUI MenuBarExtra 加 NavigationSplitView
-- 签名:Apple Developer ID 加沙盒 加 Hardened Runtime 加公证
+1. OCR 引擎:Apple Vision(系统级,免费,中文 95% 以上准确率)
+2. 全局热键:Carbon HotKey API(无需辅助功能权限)
+3. 剪贴板监听:NSPasteboard 0.5 秒轮询,跳过敏感内容标记
+4. 数据库:SQLite3(本地,默认 100 条历史,可在设置调到 1000)
+5. 渲染:SwiftUI MenuBarExtra 加 NavigationSplitView
+6. 签名:Apple Developer ID 加沙盒 加 Hardened Runtime 加公证
 
 支持 macOS 14 (Sonoma) 及以上,Apple Silicon 与 Intel 通用二进制。
 
@@ -119,12 +119,12 @@ Pluck is a privacy-first screenshot OCR and clipboard suite for macOS.
 
 KEY FEATURES
 
-- Global hotkey Control + Option + A: drag to select any screen region, Apple Vision instantly recognizes Chinese and English text and writes it to your clipboard
-- Global hotkey Control + Option + V: open clipboard history with full-text search across everything you have ever copied
-- Multi-display aware: finds the screen your cursor is on, handles mixed Retina and external monitors correctly
-- Annotation canvas: rectangle, arrow, highlight, and text tools with color palette, undo / redo, one-click export as PNG
-- Long screenshot (experimental): scroll capture multiple pages, auto-stitch into a single long image
-- Searchable clipboard history: fuzzy search across Chinese and English, 100 results in under 100 milliseconds
+1. Global hotkey Control + Option + A: drag to select any screen region, Apple Vision instantly recognizes Chinese and English text and writes it to your clipboard
+2. Global hotkey Control + Option + V: open clipboard history with full-text search across everything you have ever copied
+3. Multi-display aware: finds the screen your cursor is on, handles mixed Retina and external monitors correctly
+4. Annotation canvas: rectangle, arrow, highlight, and text tools with color palette, undo / redo, one-click export as PNG
+5. Long screenshot (experimental): scroll capture multiple pages, auto-stitch into a single long image
+6. Searchable clipboard history: fuzzy search across Chinese and English, 100 results in under 100 milliseconds
 
 WHY PLUCK
 
@@ -145,19 +145,19 @@ Menu-bar resident, no Dock icon. Global hotkeys customizable. Light and dark mod
 
 PERFECT FOR
 
-- Knowledge workers, PMs, designers (30 OCRs a day)
-- Lawyers, doctors, finance, compliance, government (confidential documents where cloud OCR is not allowed)
-- Students, researchers, cross-border professionals (paper OCR, long-screenshot archiving)
-- Mac power users (a Chinese-localized alternative to similar tools)
+1. Knowledge workers, PMs, designers (30 OCRs a day)
+2. Lawyers, doctors, finance, compliance, government (confidential documents where cloud OCR is not allowed)
+3. Students, researchers, cross-border professionals (paper OCR, long-screenshot archiving)
+4. Mac power users (a Chinese-localized alternative to similar tools)
 
 TECHNICAL DETAILS
 
-- OCR: Apple Vision Framework (system-level, free, 95 percent or higher Chinese accuracy)
-- Hotkeys: Carbon HotKey API (no Accessibility permission needed)
-- Clipboard: NSPasteboard 0.5-second polling, skips sensitive markers
-- Database: SQLite3 (local, default 100-item history, configurable up to 1000)
-- Rendering: SwiftUI MenuBarExtra plus NavigationSplitView
-- Signing: Apple Developer ID, sandbox, hardened runtime, notarized
+1. OCR: Apple Vision Framework (system-level, free, 95 percent or higher Chinese accuracy)
+2. Hotkeys: Carbon HotKey API (no Accessibility permission needed)
+3. Clipboard: NSPasteboard 0.5-second polling, skips sensitive markers
+4. Database: SQLite3 (local, default 100-item history, configurable up to 1000)
+5. Rendering: SwiftUI MenuBarExtra plus NavigationSplitView
+6. Signing: Apple Developer ID, sandbox, hardened runtime, notarized
 
 Requires macOS 14 (Sonoma) or later. Universal binary (Apple Silicon and Intel).
 
@@ -197,35 +197,35 @@ v0.1.0 首发版本
 
 核心功能
 
-- 全局热键 Control + Option + A 区域截图,基于 Apple Vision 自动 OCR(中文 95% 以上准确率)
-- 全局热键 Control + Option + V 打开剪贴板历史窗口
-- 多屏环境智能识别鼠标所在屏幕
-- 4 Tab 设置面板:通用、热键、隐私、关于
-- 首次启动 3 步引导:隐私承诺、热键、权限
+1. 全局热键 Control + Option + A 区域截图,基于 Apple Vision 自动 OCR(中文 95% 以上准确率)
+2. 全局热键 Control + Option + V 打开剪贴板历史窗口
+3. 多屏环境智能识别鼠标所在屏幕
+4. 4 Tab 设置面板:通用、热键、隐私、关于
+5. 首次启动 3 步引导:隐私承诺、热键、权限
 
 标注画布
 
-- 矩形、箭头、高亮、文本 4 种工具
-- 8 色调色板加 3 档线宽
-- 撤销、重做、一键导出 PNG
+1. 矩形、箭头、高亮、文本 4 种工具
+2. 8 色调色板加 3 档线宽
+3. 撤销、重做、一键导出 PNG
 
 历史窗口
 
-- 侧栏分类筛选加中栏列表加右栏详情(macOS 原生 3 栏布局)
-- LIKE 子串搜索(中英文,100 条结果在 100 毫秒内)
-- 截图缩略图加 OCR 文字双栏并排
+1. 侧栏分类筛选加中栏列表加右栏详情(macOS 原生 3 栏布局)
+2. LIKE 子串搜索(中英文,100 条结果在 100 毫秒内)
+3. 截图缩略图加 OCR 文字双栏并排
 
 视觉反馈
 
-- 截图后被截区域 200 毫秒白光淡出
-- 系统截图音效(AudioToolbox,沙盒友好)
-- 菜单栏图标三态:就绪、启动中、截图中
+1. 截图后被截区域 200 毫秒白光淡出
+2. 系统截图音效(AudioToolbox,沙盒友好)
+3. 菜单栏图标三态:就绪、启动中、截图中
 
 隐私
 
-- 默认不申请网络权限,Activity Monitor 可验证零外联
-- 不内嵌任何分析、崩溃、广告 SDK
-- 严格离线模式开关
+1. 默认不申请网络权限,Activity Monitor 可验证零外联
+2. 不内嵌任何分析、崩溃、广告 SDK
+3. 严格离线模式开关
 ```
 
 **英文版:**
@@ -235,35 +235,35 @@ v0.1.0 launch release
 
 CORE
 
-- Global hotkey Control + Option + A: drag-to-select region capture plus Apple Vision OCR (95 percent or higher Chinese accuracy)
-- Global hotkey Control + Option + V: clipboard history window
-- Multi-display aware (cursor follow)
-- 4-tab settings panel: General, Hotkeys, Privacy, About
-- First-launch 3-step onboarding
+1. Global hotkey Control + Option + A: drag-to-select region capture plus Apple Vision OCR (95 percent or higher Chinese accuracy)
+2. Global hotkey Control + Option + V: clipboard history window
+3. Multi-display aware (cursor follow)
+4. 4-tab settings panel: General, Hotkeys, Privacy, About
+5. First-launch 3-step onboarding
 
 ANNOTATION
 
-- Rectangle, arrow, highlight, text tools
-- 8-color palette and 3 stroke widths
-- Undo, redo, one-click PNG export
+1. Rectangle, arrow, highlight, text tools
+2. 8-color palette and 3 stroke widths
+3. Undo, redo, one-click PNG export
 
 HISTORY
 
-- 3-pane macOS-native layout: sidebar filter, list, detail
-- Fuzzy search (Chinese and English, 100 results in under 100 milliseconds)
-- Snapshot thumbnail and OCR text in split view
+1. 3-pane macOS-native layout: sidebar filter, list, detail
+2. Fuzzy search (Chinese and English, 100 results in under 100 milliseconds)
+3. Snapshot thumbnail and OCR text in split view
 
 FEEDBACK
 
-- 200ms white flash on captured region
-- System capture sound (AudioToolbox, sandbox-friendly)
-- Tri-state menu bar icon: ready, launching, capturing
+1. 200ms white flash on captured region
+2. System capture sound (AudioToolbox, sandbox-friendly)
+3. Tri-state menu bar icon: ready, launching, capturing
 
 PRIVACY
 
-- No network entitlement by default, verifiable in Activity Monitor
-- No analytics, crash reporters, or ad SDKs embedded
-- Strict offline mode toggle
+1. No network entitlement by default, verifiable in Activity Monitor
+2. No analytics, crash reporters, or ad SDKs embedded
+3. Strict offline mode toggle
 ```
 
 ---
