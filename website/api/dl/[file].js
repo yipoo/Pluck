@@ -1,38 +1,36 @@
-// Vercel Function: pluck.yipoo.com/dl/<file> → 302 → Vercel Blob 公开 URL
+// Vercel Function: pluck.yipoo.com/dl/<file> 下载代理
 //
-// 工作原理:
-//   1. 用 BLOB_READ_WRITE_TOKEN(env)调 Vercel Blob list API
-//   2. 找到匹配 dl/<file> 的对象,拿它的真实 public URL
-//   3. 302 重定向 — 浏览器自动跟随,直接从 Blob CDN 下载
+// 兼容两种 Blob 访问模式:
+//   - 公开 Blob (public.blob.vercel-storage.com)  → 302 直接重定向(走 Vercel CDN,流量免费)
+//   - 私有 Blob (private.blob.vercel-storage.com) → 用 token 拉文件 + 流式回传给浏览器
 //
-// 优点:
-//   - URL 永远在自己域名,即使切换托管也不动
-//   - 升级版本(传新 blob)无需改 HTML
-//   - 可以加 Cache-Control / 统计 / 限流
-//
-// 路由:配合 vercel.json 的 rewrite:
+// 路由配合 vercel.json 的 rewrite:
 //   /dl/:file → /api/dl/:file
+//
+// 升级版本:把新 DMG 上传到 Blob 的 dl/<同名>,HTML 不动
 
 import { list } from '@vercel/blob';
+import { Readable } from 'node:stream';
 
 export default async function handler(req, res) {
   const { file } = req.query;
 
-  if (!file || typeof file !== 'string') {
+  // 输入校验
+  if (
+    !file ||
+    typeof file !== 'string' ||
+    file.includes('/') ||
+    file.includes('..') ||
+    file.includes('\\')
+  ) {
     res.statusCode = 400;
-    return res.end('Missing file parameter');
-  }
-
-  // 防 path traversal
-  if (file.includes('/') || file.includes('..') || file.includes('\\')) {
-    res.statusCode = 400;
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
     return res.end('Invalid file name');
   }
 
   const path = `dl/${file}`;
 
   try {
-    // list({ prefix }) 在我们的 dl/ 目录下找匹配
     const { blobs } = await list({ prefix: path, limit: 5 });
     const blob = blobs.find((b) => b.pathname === path);
 
@@ -41,24 +39,60 @@ export default async function handler(req, res) {
       res.setHeader('Content-Type', 'text/plain; charset=utf-8');
       return res.end(
         `文件未找到:${path}\n\n` +
-        `可能原因:\n` +
-        `1. 文件名拼写有误\n` +
-        `2. 文件还没上传到 Vercel Blob 的 dl/ 目录\n` +
-        `3. 文件已被删除`
+        `请确认 Vercel Blob 的 dl/ 目录下有这个文件。`
       );
     }
 
-    // 设置 cache:5 分钟内 Vercel CDN 直接复用 302 响应
-    res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=300');
-    // 让浏览器知道这是下载
+    // 关键:看 URL 判断公开 / 私有
+    const isPublic = blob.url.includes('public.blob.vercel-storage.com');
+
+    // ===== 公开:直接 302,流量走 Vercel CDN =====
+    if (isPublic) {
+      res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=300');
+      res.setHeader('Content-Disposition', `attachment; filename="${file}"`);
+      res.statusCode = 302;
+      res.setHeader('Location', blob.url);
+      return res.end();
+    }
+
+    // ===== 私有:函数加 token 拉,流式回传 =====
+    const token = process.env.BLOB_READ_WRITE_TOKEN;
+    if (!token) {
+      res.statusCode = 500;
+      return res.end('BLOB_READ_WRITE_TOKEN 未配置');
+    }
+
+    const upstream = await fetch(blob.url, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!upstream.ok || !upstream.body) {
+      console.error('[dl] upstream error', upstream.status, upstream.statusText);
+      res.statusCode = 502;
+      return res.end(`Upstream Blob 取文件失败:${upstream.status}`);
+    }
+
+    // 透传 Content-Type / Length(尽量保留原始)
+    const contentType =
+      upstream.headers.get('content-type') || 'application/octet-stream';
+    const contentLength = upstream.headers.get('content-length');
+    res.setHeader('Content-Type', contentType);
+    if (contentLength) res.setHeader('Content-Length', contentLength);
     res.setHeader('Content-Disposition', `attachment; filename="${file}"`);
-    res.statusCode = 302;
-    res.setHeader('Location', blob.url);
-    return res.end();
+    res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=300');
+
+    // WHATWG ReadableStream → Node.js stream → res(管道流式回传,不占内存)
+    Readable.fromWeb(upstream.body).pipe(res);
   } catch (err) {
-    console.error('[dl proxy]', err);
-    res.statusCode = 500;
-    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-    return res.end('内部错误,请稍后再试');
+    console.error('[dl proxy] error:', err);
+    if (!res.headersSent) {
+      res.statusCode = 500;
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      return res.end('内部错误');
+    }
+    res.end();
   }
 }
+
+// 默认 Node.js runtime(边缘函数 Edge Runtime 不支持 node:stream)
+// 流式响应不会被全部加载到内存,大文件也安全

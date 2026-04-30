@@ -2,7 +2,14 @@
 
 ## `dl/[file].js` — DMG 下载代理
 
-将 `pluck.yipoo.com/dl/Pluck-0.1.0.dmg` 这类 URL 转成 302 跳转到 Vercel Blob 上的真实文件。
+将 `pluck.yipoo.com/dl/Pluck-0.1.0.dmg` 这类 URL 自动适配两种 Blob 模式:
+
+| Blob 类型 | URL 特征 | 处理方式 | 流量经过 |
+|---------|--------|--------|---------|
+| **公开** | `public.blob.vercel-storage.com` | **302 重定向** | Vercel CDN(免费快速) |
+| **私有** | `private.blob.vercel-storage.com` | **函数加 token 拉 + 流式回传** | Function 计算时间 |
+
+⭐ **强烈建议把 Blob 设为公开** — 速度快、不耗 Function 配额。私有适合敏感文件(我们这是公开 DMG,无需私有)。
 
 ### 工作流
 
