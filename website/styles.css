@@ -529,7 +529,17 @@ code { font-family: 'SF Mono', 'Menlo', monospace; font-size: 0.875em; padding: 
   box-shadow: var(--shadow-md);
 }
 @media (max-width: 720px) { .download-card { flex-direction: column; text-align: center; } }
-.download-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+.download-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 6px; display: inline-flex; align-items: center; gap: 10px; }
+.free-tag {
+  display: inline-block;
+  padding: 3px 10px;
+  font-size: 11px; font-weight: 700;
+  background: rgba(52, 199, 89, 0.18);
+  color: #2ea44f;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+}
 .version-meta {
   font-size: 13px; color: var(--text-mute);
 }

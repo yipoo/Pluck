@@ -1,7 +1,12 @@
-# Pluck — App Store Connect 提交材料
+# Pluck — App Store Connect 提交材料(内部参考)
+
+> ⚠️ **重要**:**不要从本文件复制描述 / Promotional Text / Keywords / What's New 到 ASC** — 本文件包含 `•` `✓` `⌃⌥` `→` `⭐` 等 ASC 拒绝的字符,留作内部 markdown 阅读用。
+>
+> ⭐ **复制源:[ASC_CLEAN_TEXT.md](ASC_CLEAN_TEXT.md)**(纯 ASCII + 中文,扫描验证 0 雷区)。本文件用来看流程 / 截图 / 隐私问卷 / 提交清单。
+
+> 💰 **价格更新**(2026-04-27):本 App **永久免费**,Pricing Tier 全部选 **Free**。下面 §2 的"¥98 / ¥48 / ¥298"分层已废弃,留作以后参考。
 
 完整的 macOS App Store 上架元数据(中英双语)+ 截图规格 + 提交流程。
-所有内容已按 App Store Connect 各字段排好,**复制即用**。
 
 ---
 
@@ -69,16 +74,16 @@
 
 ## 2. Pricing & Availability(定价与可用区域)
 
-### Pricing Tier 建议(¥98 ≈ $13.99)
+### 当前定价:**永久免费**
 
-| 渠道 | 套餐 | 价格 | App Store 对应 Tier |
-|------|------|------|---------------------|
-| MAS 一次性(Pro) | 单次内购买断 | ¥98 / $13.99 | Tier 14 (China) / Tier 14 (US) |
-| MAS 订阅(Pro+) | 1 年 | ¥48 / $6.99 | Tier 7 |
-| MAS 终身(Lifetime) | 一次性升级 | ¥298 / $39.99 | Tier 40 |
-| 自有官网 | 同价,Paddle / Lemon Squeezy 收单 | 同 | — |
+| 渠道 | 价格 | ASC 设置 |
+|------|------|---------|
+| Mac App Store | 免费 | **Price Schedule → Free** |
+| 自有官网 | 免费 DMG | 直接下载,不接支付 |
 
-**v0.1 内测期**:免费上架(Free)+ 自有官网下载,先攒 1000 用户再开通付费。
+**Pluck 永久免费**。后续可能在 App 内或官网增加"打赏"入口(自愿捐助,类似 Buy Me a Coffee / Patreon),**不影响任何功能可用性**,也无需通过 ASC 配置(直链跳转外部即可)。
+
+> ⚠️ Mac App Store 沙盒规则禁止 IAP 之外的支付方式。如未来需要 IAP 形式打赏,需在 ASC 单独配置非消耗型 IAP 项,且必须按 Apple 30% 抽成规则走。
 
 ### Availability
 
