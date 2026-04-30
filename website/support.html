@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pluck — 支持中心</title>
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo">
+      <span class="logo-mark">
+        <svg viewBox="0 0 100 100" width="28" height="28" aria-hidden="true">
+          <defs><linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4ea8ff"/><stop offset="1" stop-color="#0066e6"/></linearGradient></defs>
+          <rect width="100" height="100" rx="22.5" fill="url(#lg)"/>
+          <g fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round">
+            <path d="M30 22 H22 V30"/><path d="M70 22 H78 V30"/>
+            <path d="M30 78 H22 V70"/><path d="M70 78 H78 V70"/>
+            <circle cx="50" cy="50" r="14"/>
+          </g>
+        </svg>
+      </span>
+      <span class="logo-text">Pluck</span>
+    </a>
+    <div class="nav-links">
+      <a href="/">首页</a>
+      <a href="privacy.html">隐私政策</a>
+      <a href="terms.html">使用条款</a>
+    </div>
+  </div>
+</nav>
+
+<article class="legal">
+  <div class="container">
+    <h1>支持中心</h1>
+    <p class="legal-meta">遇到问题?这里能帮到你。</p>
+
+    <h2>📩 联系我们</h2>
+    <p>最快路径是直接发邮件:<a href="mailto:hi@pluck.app">hi@pluck.app</a></p>
+    <p>工作日 24 小时内回复。请在邮件里包含:</p>
+    <ul>
+      <li>macOS 版本(在 → 关于本机 看)</li>
+      <li>Pluck 版本(在 设置 → 关于 看)</li>
+      <li>问题描述 + 复现步骤</li>
+      <li>(可选)截图</li>
+    </ul>
+
+    <h2>🚀 快速开始</h2>
+    <p>第一次用 Pluck?</p>
+    <ol>
+      <li>下载并打开 Pluck — 它会出现在菜单栏(顶部状态栏)</li>
+      <li>系统会请求"屏幕录制"权限,授予后即可使用</li>
+      <li>按 <code>⌃⌥A</code> 拖动选择屏幕任意区域 → 文字会自动识别并写入剪贴板</li>
+      <li>按 <code>⌃⌥V</code> 打开剪贴板历史窗口</li>
+    </ol>
+
+    <h2>❓ 常见问题</h2>
+
+    <h3>截图无反应?</h3>
+    <p>99% 是屏幕录制权限。检查:</p>
+    <ol>
+      <li>系统设置 → 隐私与安全性 → 屏幕录制</li>
+      <li>找到 "Pluck" 并勾上</li>
+      <li>完全退出 Pluck(⌘Q,不是关窗口)</li>
+      <li>重新启动</li>
+    </ol>
+    <p>如还不行,在终端跑:</p>
+    <pre><code>tccutil reset ScreenCapture com.yipoo.Pluck</code></pre>
+    <p>然后重启 Pluck,系统会重新弹权限对话框。</p>
+
+    <h3>OCR 识别不准?</h3>
+    <ul>
+      <li>印刷体中文 / 英文准确率 95%+</li>
+      <li>手写体目前不太行(v0.3 计划支持)</li>
+      <li>低分辨率或截区太小可能影响 — 试着选大一点</li>
+    </ul>
+
+    <h3>历史搜索找不到?</h3>
+    <ul>
+      <li>历史默认保留 100 条;可在 设置 → 通用 调到 1000</li>
+      <li>搜索是子串匹配,中英文都支持</li>
+      <li>类型过滤:左侧栏点 文本 / 图片 / 文件 缩小范围</li>
+    </ul>
+
+    <h3>菜单栏图标不见了?</h3>
+    <p>系统屏幕太小或图标被挤出去了。两种解法:</p>
+    <ul>
+      <li>装 Bartender / Hidden Bar 工具,把不常用的菜单栏图标隐藏起来</li>
+      <li>退出 Pluck 重新打开,会重新出现在菜单栏</li>
+    </ul>
+
+    <h3>能跨设备同步吗?</h3>
+    <p>v0.1 不支持。我们隐私优先,数据只存本机。v2.0 会加 iCloud 同步(可选,默认关)。</p>
+
+    <h3>能用在 Windows / iPad 吗?</h3>
+    <ul>
+      <li>iOS 配套 App 计划在 v1.0(2027 Q1)</li>
+      <li>Windows 版计划在 v2.0(2027 Q3)</li>
+      <li>当前仅 macOS 14+</li>
+    </ul>
+
+    <h3>买断后还能收到更新吗?</h3>
+    <p>Pro ¥98 买断 = 1 年内所有更新免费。1 年后:</p>
+    <ul>
+      <li>老版本继续可用,无功能限制</li>
+      <li>想要新功能 → 续订 ¥48/年 或升级到 ¥298 终身</li>
+    </ul>
+
+    <h3>退款?</h3>
+    <p>7 天内任何理由全额退。Mac App Store 购买:在 <a href="https://reportaproblem.apple.com" target="_blank" rel="noopener">reportaproblem.apple.com</a> 申请。官网购买:发邮件 <a href="mailto:hi@pluck.app">hi@pluck.app</a>。</p>
+
+    <h2>🐛 报 Bug</h2>
+    <p>请在邮件里包含:</p>
+    <ul>
+      <li>macOS 版本 + Pluck 版本</li>
+      <li>触发步骤</li>
+      <li>预期结果 vs 实际结果</li>
+      <li>(如有)崩溃日志:在 Console.app → 崩溃报告 → Pluck</li>
+    </ul>
+    <p>或在 <a href="https://github.com/dinglei/pluck/issues" target="_blank" rel="noopener">GitHub Issues</a> 提交。</p>
+
+    <h2>💡 提建议</h2>
+    <p>邮件 / GitHub Issues / 即刻 / V2EX 都欢迎。我们会在每个版本的 CHANGELOG 里感谢提建议的用户。</p>
+
+    <h2>🔐 数据完全删除</h2>
+    <p>如果你想完全卸载并清除所有数据:</p>
+    <ol>
+      <li>在 Pluck 设置 → 隐私 → 清空所有剪贴板历史 + 清空所有截图</li>
+      <li>退出 Pluck</li>
+      <li>把 Pluck.app 拖到废纸篓</li>
+      <li>(彻底)删除 <code>~/Library/Containers/com.yipoo.Pluck/</code></li>
+    </ol>
+    <p>由于我们不存任何数据在云端,这些步骤就是全部。</p>
+
+    <h2>📜 法律</h2>
+    <ul>
+      <li><a href="privacy.html">隐私政策</a></li>
+      <li><a href="terms.html">使用条款</a></li>
+    </ul>
+
+    <p class="legal-footer">
+      Copyright © 2026 dinglei. All rights reserved.
+    </p>
+  </div>
+</article>
+
+</body>
+</html>

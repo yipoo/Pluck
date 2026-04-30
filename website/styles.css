@@ -573,6 +573,82 @@ code { font-family: 'SF Mono', 'Menlo', monospace; font-size: 0.875em; padding: 
   line-height: 1.6;
 }
 
+/* ===== Legal pages (privacy / terms / support) ===== */
+
+.legal {
+  padding: 80px 0 100px;
+  background: var(--bg);
+  color: var(--text);
+}
+.legal .container {
+  max-width: 760px;
+}
+.legal h1 {
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+.legal .legal-meta {
+  font-size: 13px;
+  color: var(--text-mute);
+  margin-bottom: 36px;
+}
+.legal h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-top: 36px;
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+.legal h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 22px;
+  margin-bottom: 8px;
+}
+.legal p,
+.legal ul,
+.legal ol {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-soft);
+  margin-bottom: 14px;
+}
+.legal ul,
+.legal ol {
+  padding-left: 24px;
+}
+.legal li {
+  margin-bottom: 6px;
+}
+.legal pre {
+  background: var(--bg-soft);
+  padding: 14px 18px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 14px 0;
+  border: 1px solid var(--border);
+}
+.legal pre code {
+  background: none;
+  padding: 0;
+  font-size: 13px;
+}
+.legal a {
+  color: var(--accent);
+}
+.legal strong {
+  color: var(--text);
+}
+.legal .legal-footer {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-mute);
+}
+
 /* ===== Footer ===== */
 .footer {
   padding: 60px 0 40px;

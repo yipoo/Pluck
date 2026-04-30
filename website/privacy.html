@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pluck — 隐私政策</title>
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo">
+      <span class="logo-mark">
+        <svg viewBox="0 0 100 100" width="28" height="28" aria-hidden="true">
+          <defs><linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4ea8ff"/><stop offset="1" stop-color="#0066e6"/></linearGradient></defs>
+          <rect width="100" height="100" rx="22.5" fill="url(#lg)"/>
+          <g fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round">
+            <path d="M30 22 H22 V30"/><path d="M70 22 H78 V30"/>
+            <path d="M30 78 H22 V70"/><path d="M70 78 H78 V70"/>
+            <circle cx="50" cy="50" r="14"/>
+          </g>
+        </svg>
+      </span>
+      <span class="logo-text">Pluck</span>
+    </a>
+    <div class="nav-links">
+      <a href="/">首页</a>
+      <a href="terms.html">使用条款</a>
+      <a href="support.html">支持</a>
+    </div>
+  </div>
+</nav>
+
+<article class="legal">
+  <div class="container">
+    <h1>隐私政策</h1>
+    <p class="legal-meta">最后更新:2026-04-27</p>
+
+    <h2>1. 我们的承诺(TL;DR)</h2>
+    <p><strong>Pluck 不收集你的任何数据。</strong></p>
+    <ul>
+      <li>所有 OCR / 截图 / 剪贴板历史 <strong>只存在你的 Mac 上</strong></li>
+      <li>App 默认 <strong>不申请网络访问权限</strong>(可在 Activity Monitor 验证)</li>
+      <li>不内嵌任何分析、崩溃、广告 SDK</li>
+      <li>不收集设备 ID、IP、邮箱、姓名 等任何识别信息</li>
+      <li>没有用户账号体系,无需注册登录</li>
+    </ul>
+
+    <h2>2. 我们处理什么数据</h2>
+
+    <h3>2.1 截图(Screenshots)</h3>
+    <p>当你按 ⌃⌥A 选择屏幕区域,Pluck 调用 Apple ScreenCaptureKit 截屏。截图文件保存在:</p>
+    <pre><code>~/Library/Containers/com.yipoo.Pluck/Data/Library/Application Support/Pluck/snapshots/</code></pre>
+    <p>这些文件 <strong>从不离开你的设备</strong>。Pluck 不发送任何截图到服务器。</p>
+
+    <h3>2.2 OCR 文字识别</h3>
+    <p>Pluck 用 Apple Vision Framework 在本机识别截图中的文字。Vision 是 macOS 系统级 API,识别过程完全本地,Apple 也不会上传图像。</p>
+
+    <h3>2.3 剪贴板历史(Clipboard History)</h3>
+    <p>Pluck 监听系统剪贴板变化(通过 NSPasteboard 轮询)并存到本机 SQLite 数据库:</p>
+    <pre><code>~/Library/Containers/com.yipoo.Pluck/Data/Library/Application Support/Pluck/pluck.sqlite</code></pre>
+    <p>默认保留最近 100 条(可在设置调整)。<strong>这些内容只在你的 Mac 上</strong>。</p>
+    <p>对于标记为敏感的内容(密码管理器写入的 <code>org.nspasteboard.ConcealedType</code>),Pluck <strong>主动跳过不存储</strong>。</p>
+
+    <h3>2.4 用户偏好(UserDefaults)</h3>
+    <p>设置面板的偏好(热键、外观、历史保留条数等)存储在 macOS 标准 UserDefaults。这些是设备本地数据,不会上传到任何服务器。</p>
+
+    <h2>3. 我们 <em>不</em> 做的</h2>
+    <ul>
+      <li>不发送数据到云端</li>
+      <li>不与第三方分享数据</li>
+      <li>不内嵌追踪 / 分析 / 广告 SDK</li>
+      <li>不使用 Cookie(我们不是网站,但官网也只用必要 Cookie)</li>
+      <li>不要求账号 / 注册 / 登录</li>
+      <li>不读取你 Mac 上其他文件</li>
+      <li>不连接任何远程服务器(除你显式开启 Sparkle 自动更新检查)</li>
+    </ul>
+
+    <h2>4. 苹果 Apple 官方 API 用途说明</h2>
+    <p>Pluck 使用以下需要"使用原因"声明的 Apple API:</p>
+    <ul>
+      <li><strong>NSPrivacyAccessedAPICategoryUserDefaults</strong>:CA92.1 — 仅访问 App 自身的偏好设置(热键 / 外观)</li>
+    </ul>
+    <p>其他 API(Vision / ScreenCaptureKit / NSPasteboard)是常规使用,无需特殊声明。</p>
+
+    <h2>5. 屏幕录制权限</h2>
+    <p>macOS 14+ 强制要求 App 申请"屏幕录制"权限以截屏。Pluck 在首次截图时会触发系统对话框,你可以在 <strong>系统设置 → 隐私与安全性 → 屏幕录制</strong> 随时撤销。</p>
+    <p>这个权限 <strong>只用于截图功能本身</strong>,不会用于其他用途。</p>
+
+    <h2>6. 软件更新检查</h2>
+    <p>如果你在 设置 → 通用 中点 "<strong>检查更新</strong>",Pluck 会向 <code>https://pluck.app/appcast.xml</code> 发送一次 HTTPS 请求,获取最新版本号。<strong>仅此一次,且仅你主动触发</strong>。我们的服务器只看到一次匿名 HTTPS 请求,不存储任何 IP / User Agent 用作分析。</p>
+    <p>"自动检查更新"默认 <strong>关闭</strong>。</p>
+
+    <h2>7. 数据删除</h2>
+    <p>你可以随时:</p>
+    <ul>
+      <li><strong>设置 → 隐私 → 清空所有剪贴板历史</strong>(清数据库 + 磁盘 PNG)</li>
+      <li><strong>设置 → 隐私 → 清空所有截图</strong></li>
+      <li>直接卸载 Pluck → 删除 <code>~/Library/Containers/com.yipoo.Pluck/</code></li>
+    </ul>
+    <p>由于我们不存任何数据在云端,卸载即彻底清除。</p>
+
+    <h2>8. 儿童隐私</h2>
+    <p>Pluck 不针对 13 岁以下儿童设计或推广,但任何年龄使用都安全 — 我们不收集数据。</p>
+
+    <h2>9. 第三方服务</h2>
+    <p>当前版本 <strong>不集成任何第三方服务</strong>。未来可选 AI 增强功能(v0.3+)接入备案 LLM(豆包 / Kimi / DeepSeek)时,会:</p>
+    <ul>
+      <li>默认 <strong>关闭</strong>,需用户显式开启</li>
+      <li>开启时弹出明确告知("此功能会把选区文字发送到 X 服务")</li>
+      <li>每次使用前再次确认</li>
+      <li>各 LLM 服务商的隐私政策由其自行公布</li>
+    </ul>
+
+    <h2>10. 中国法律合规</h2>
+    <p>Pluck 严格遵循中国《个人信息保护法》(PIPL)及《数据安全法》。由于我们不收集任何"个人信息",大多数条款不适用。</p>
+    <p>如未来需要扩展数据处理范围,我们会:</p>
+    <ul>
+      <li>更新本隐私政策并通知用户</li>
+      <li>申请相应资质(如需要)</li>
+      <li>保持"不上传敏感信息"的核心承诺</li>
+    </ul>
+
+    <h2>11. 政策变更</h2>
+    <p>本政策的任何重大变更会:</p>
+    <ul>
+      <li>提前 30 天在官网首页公告</li>
+      <li>在 App 内通知现有用户</li>
+      <li>用户可选择不接受新版,继续使用旧版本(不强制升级)</li>
+    </ul>
+
+    <h2>12. 联系我们</h2>
+    <p>对本政策有任何疑问,请发邮件:<a href="mailto:hi@pluck.app">hi@pluck.app</a></p>
+    <p>开发者:dinglei<br>
+       国家 / 地区:中国<br>
+       邮件回复时间:工作日 24 小时内</p>
+
+    <p class="legal-footer">
+      Copyright © 2026 dinglei. All rights reserved.<br>
+      Pluck™ 标识为开发者所有。
+    </p>
+  </div>
+</article>
+
+</body>
+</html>
