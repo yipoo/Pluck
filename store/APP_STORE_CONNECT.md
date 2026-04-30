@@ -118,7 +118,7 @@
 
 ### Privacy Policy URL(必填)
 
-`https://pluck.app/privacy.html`
+`https://pluck.yipoo.com/privacy.html`
 
 (stub 已生成在 website/privacy.html — 见本仓库;部署到 Vercel/Cloudflare Pages 后 URL 立即可用)
 
@@ -187,9 +187,9 @@ Pluck 是一款 macOS 上的隐私优先截图 OCR 与剪贴板套件。
 
 支持 macOS 14 (Sonoma) 及以上,Apple Silicon + Intel 通用二进制。
 
-隐私政策:https://pluck.app/privacy
+隐私政策:https://pluck.yipoo.com/privacy
 开发者:dinglei
-反馈:hi@pluck.app
+反馈:pluck@yipoo.com
 ```
 (约 1500 字)
 
@@ -241,9 +241,9 @@ TECHNICAL DETAILS
 
 Requires macOS 14 (Sonoma) or later. Universal binary (Apple Silicon + Intel).
 
-Privacy: https://pluck.app/privacy
+Privacy: https://pluck.yipoo.com/privacy
 Developer: dinglei
-Feedback: hi@pluck.app
+Feedback: pluck@yipoo.com
 ```
 (~280 words)
 
@@ -333,10 +333,10 @@ v0.1.0 — Pluck launch release
 
 | 字段 | URL | 备注 |
 |------|-----|------|
-| **Marketing URL** | `https://pluck.app` | 官网首页(已写好 hero + features + privacy + download + faq) |
-| **Support URL** | `https://pluck.app/support.html` | 必填,stub 已生成 |
-| **Privacy Policy URL** | `https://pluck.app/privacy.html` | 必填,stub 已生成 |
-| **EULA**(可选)| `https://pluck.app/terms.html` | 不填会用 Apple 默认 EULA |
+| **Marketing URL** | `https://pluck.yipoo.com` | 官网首页(已写好 hero + features + privacy + download + faq) |
+| **Support URL** | `https://pluck.yipoo.com/support.html` | 必填,stub 已生成 |
+| **Privacy Policy URL** | `https://pluck.yipoo.com/privacy.html` | 必填,stub 已生成 |
+| **EULA**(可选)| `https://pluck.yipoo.com/terms.html` | 不填会用 Apple 默认 EULA |
 
 ### 4.6 Copyright
 
@@ -348,7 +348,7 @@ v0.1.0 — Pluck launch release
 
 ```
 Name: dinglei
-Email: hi@pluck.app(把它配成你能收的真实邮箱)
+Email: pluck@yipoo.com(把它配成你能收的真实邮箱)
 Phone: +86-XXXX(必填)
 ```
 
@@ -367,7 +367,7 @@ Pluck 是一款本地处理的截图 OCR + 剪贴板工具,无需登录、无需
 不需要任何账号或网络连接。
 所有数据存储在 ~/Library/Containers/com.yipoo.Pluck/Data/Library/Application Support/Pluck/
 
-如有问题请联系 hi@pluck.app
+如有问题请联系 pluck@yipoo.com
 ```
 
 ### 4.9 Sign-In Information
@@ -485,7 +485,7 @@ Hi,
 如还有问题,把 macOS 版本号 + Pluck 版本号(在"设置 → 关于"看)发给我们,我们立即跟进。
 
 谢谢!
-hi@pluck.app
+pluck@yipoo.com
 ```
 
 ### 用户问"为什么不上 iOS"
@@ -493,7 +493,7 @@ hi@pluck.app
 ```
 Pluck 用的截图 API 是 macOS 专属(ScreenCaptureKit),iOS 没有等价权限模型。
 iOS 配套 App 已在 v1.0 路线图(用 iPhone 摄像头扫描后传到 Mac OCR),
-预计 2027 Q1 推出。先在 https://pluck.app 留个邮箱,我们发布时通知你。
+预计 2027 Q1 推出。先在 https://pluck.yipoo.com 留个邮箱,我们发布时通知你。
 ```
 
 ---

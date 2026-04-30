@@ -180,7 +180,7 @@ create-dmg Pluck.app
 |---|------|----------|
 | 1 | **Apple Developer 账号注册**(个人 vs 公司主体) | 公证前(2.1.E) |
 | 2 | **海外公司主体形式**(新加坡 / 香港 / 美国 LLC) | 接 Paddle 收款前 |
-| 3 | **域名**(pluck.app / pluck.cn / getpluck.com)+ 商标查询 | 官网上线前 |
+| 3 | **域名**(pluck.yipoo.com / pluck.cn / getpluck.com)+ 商标查询 | 官网上线前 |
 | 4 | **GitHub 远端仓库**(personal vs org;public vs private) | 想跨机器开发 / CI 前 |
 | 5 | **Sparkle EdDSA 密钥保管位置**(1Password / Bitwarden / 硬件密钥) | 第一次发版前 |
 | 6 | **官网技术栈**(Astro / Next / 自己写) | 启动 2.1.I 时 |

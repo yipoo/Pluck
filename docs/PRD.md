@@ -189,7 +189,7 @@
 - 排除候选:Pickly / Glint / Lume / Knack — 备用,若 .app 域名或商标受阻可启用
 
 W7 公证前必须完成的命名相关事项:
-1. **域名**:首选 `pluck.app`,备选 `pluck.cn` / `getpluck.com` / `pluckapp.com`,预算 ¥100-2000
+1. **域名**:首选 `pluck.yipoo.com`,备选 `pluck.cn` / `getpluck.com` / `pluckapp.com`,预算 ¥100-2000
 2. **商标**:中国 Class 9(软件)+ Class 42(SaaS),约 ¥1500-3000 / 件;海外可用 LegalZoom / Trademarkia
 3. **GitHub Org**:`pluck-app` 或 `getpluck`
 

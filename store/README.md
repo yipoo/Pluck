@@ -58,10 +58,10 @@ store/
 
 ASC 必填三个 URL:Marketing / Support / Privacy Policy。Stub 已生成:
 
-- `website/index.html` → `https://pluck.app`
-- `website/privacy.html` → `https://pluck.app/privacy.html`
-- `website/terms.html` → `https://pluck.app/terms.html`(EULA 可选)
-- `website/support.html` → `https://pluck.app/support.html`
+- `website/index.html` → `https://pluck.yipoo.com`
+- `website/privacy.html` → `https://pluck.yipoo.com/privacy.html`
+- `website/terms.html` → `https://pluck.yipoo.com/terms.html`(EULA 可选)
+- `website/support.html` → `https://pluck.yipoo.com/support.html`
 
 部署到 Vercel / Cloudflare Pages / 自有 CDN 后,这些 URL 立即生效。
 

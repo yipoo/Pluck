@@ -69,7 +69,7 @@ final class UpdaterService: ObservableObject {
         alert.addButton(withTitle: "访问官网")
         alert.addButton(withTitle: "好")
         if alert.runModal() == .alertFirstButtonReturn {
-            if let url = URL(string: "https://pluck.app") {
+            if let url = URL(string: "https://pluck.yipoo.com") {
                 NSWorkspace.shared.open(url)
             }
         }

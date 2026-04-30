@@ -62,7 +62,7 @@
 
     <!-- appcast.xml 的 URL,部署到自有 CDN -->
     <key>SUFeedURL</key>
-    <string>https://pluck.app/appcast.xml</string>
+    <string>https://pluck.yipoo.com/appcast.xml</string>
 
     <!-- EdDSA 公钥(generate_keys 生成,只填公钥的那串 base64) -->
     <key>SUPublicEDKey</key>

@@ -56,7 +56,7 @@ Private key 已写入 keychain:Sparkle Private Key
 
 ```xml
 <key>SUFeedURL</key>
-<string>https://pluck.app/appcast.xml</string>
+<string>https://pluck.yipoo.com/appcast.xml</string>
 ```
 
 改成你的真实域名(自己买的 .app 域名 / Vercel / Cloudflare Pages 都行)。
@@ -70,7 +70,7 @@ Private key 已写入 keychain:Sparkle Private Key
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
   <channel>
     <title>Pluck</title>
-    <link>https://pluck.app/appcast.xml</link>
+    <link>https://pluck.yipoo.com/appcast.xml</link>
     <description>Pluck 自动更新源</description>
     <language>zh-CN</language>
 
@@ -89,7 +89,7 @@ Private key 已写入 keychain:Sparkle Private Key
         </ul>
       ]]></description>
       <enclosure
-        url="https://pluck.app/dl/Pluck-0.2.0.dmg"
+        url="https://pluck.yipoo.com/dl/Pluck-0.2.0.dmg"
         sparkle:edSignature="__sign_with_sign_update_tool__"
         length="12345678"
         type="application/octet-stream"/>

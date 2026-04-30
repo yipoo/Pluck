@@ -41,7 +41,7 @@ final class SettingsStore: ObservableObject {
         static let historyLimit   = "pluck.historyLimit"
         static let launchAtLogin  = "pluck.launchAtLogin"
         static let strictOffline  = "pluck.strictOffline"
-        static let appearance     = "pluck.appearance"
+        static let appearance     = "pluck.yipoo.comearance"
         static let onboardingDone = "pluck.onboardingDone"
         static let captureCombo   = "pluck.captureCombo"
         static let toggleCombo    = "pluck.toggleCombo"
