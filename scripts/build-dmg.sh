@@ -35,27 +35,63 @@ command -v xcodebuild >/dev/null || err "xcodebuild 不可用,请装 Xcode 命�
 mkdir -p "$BUILD_DIR" "$DIST_DIR"
 
 # ---------- Build ----------
-APP_PATH="$BUILD_DIR/Build/Products/$CONFIGURATION/$APP_NAME.app"
 
 if [ "${SKIP_BUILD:-0}" = "0" ]; then
     log "构建 $CONFIGURATION..."
-    xcodebuild \
-        -project "$PROJECT" \
-        -scheme "$SCHEME" \
-        -configuration "$CONFIGURATION" \
-        -derivedDataPath "$BUILD_DIR" \
-        clean build \
-        | xcbeautify 2>/dev/null || \
-    xcodebuild \
-        -project "$PROJECT" \
-        -scheme "$SCHEME" \
-        -configuration "$CONFIGURATION" \
-        -derivedDataPath "$BUILD_DIR" \
-        clean build \
-        | tail -10
+    if command -v xcbeautify >/dev/null 2>&1; then
+        set +e
+        xcodebuild \
+            -project "$PROJECT" \
+            -scheme "$SCHEME" \
+            -configuration "$CONFIGURATION" \
+            -derivedDataPath "$BUILD_DIR" \
+            clean build \
+            | xcbeautify
+        BUILD_RC=${PIPESTATUS[0]}
+        set -e
+    else
+        set +e
+        xcodebuild \
+            -project "$PROJECT" \
+            -scheme "$SCHEME" \
+            -configuration "$CONFIGURATION" \
+            -derivedDataPath "$BUILD_DIR" \
+            clean build \
+            | tail -30
+        BUILD_RC=${PIPESTATUS[0]}
+        set -e
+    fi
+    [ "$BUILD_RC" -eq 0 ] || err "xcodebuild 失败(退出码 $BUILD_RC)"
 fi
 
-[ -d "$APP_PATH" ] || err "找不到 $APP_PATH(build 失败?)"
+# ---------- 定位 .app(关键:动态查询,不假设路径)----------
+# 项目可能自定义 BUILT_PRODUCTS_DIR(比如绝对路径),硬写路径会找不到
+log "定位 $APP_NAME.app..."
+BUILT_PRODUCTS_DIR=$(xcodebuild \
+    -project "$PROJECT" \
+    -scheme "$SCHEME" \
+    -configuration "$CONFIGURATION" \
+    -derivedDataPath "$BUILD_DIR" \
+    -showBuildSettings 2>/dev/null \
+    | awk -F ' = ' '/^[[:space:]]+BUILT_PRODUCTS_DIR = /{print $2; exit}')
+
+APP_PATH="$BUILT_PRODUCTS_DIR/$APP_NAME.app"
+
+# 兜底:如果 -showBuildSettings 没拿到 / .app 不在那,fallback 到默认 derivedData 路径
+if [ ! -d "$APP_PATH" ]; then
+    warn "BUILT_PRODUCTS_DIR 路径下没找到 .app,尝试常见位置..."
+    for candidate in \
+        "$BUILD_DIR/Build/Products/$CONFIGURATION/$APP_NAME.app" \
+        "$HOME/Library/Developer/Xcode/DerivedData/Build/Products/$CONFIGURATION/$APP_NAME.app" \
+        "$HOME/Library/Developer/Xcode/DerivedData/$APP_NAME"-*"/Build/Products/$CONFIGURATION/$APP_NAME.app"; do
+        if [ -d "$candidate" ]; then
+            APP_PATH="$candidate"
+            break
+        fi
+    done
+fi
+
+[ -d "$APP_PATH" ] || err "找不到 $APP_NAME.app。检查:1) build 是否真成功,2) 项目是否自定义了 BUILT_PRODUCTS_DIR"
 log ".app: $APP_PATH"
 
 # ---------- 取版本 ----------
