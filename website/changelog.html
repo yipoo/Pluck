@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pluck — 更新日志</title>
+<meta name="description" content="Pluck 各版本更新内容 / 功能新增 / Bug 修复">
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="/" class="logo">
+      <span class="logo-mark">
+        <svg viewBox="0 0 100 100" width="28" height="28" aria-hidden="true">
+          <defs><linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4ea8ff"/><stop offset="1" stop-color="#0066e6"/></linearGradient></defs>
+          <rect width="100" height="100" rx="22.5" fill="url(#lg)"/>
+          <g fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round">
+            <path d="M30 22 H22 V30"/><path d="M70 22 H78 V30"/>
+            <path d="M30 78 H22 V70"/><path d="M70 78 H78 V70"/>
+            <circle cx="50" cy="50" r="14"/>
+          </g>
+        </svg>
+      </span>
+      <span class="logo-text">Pluck</span>
+    </a>
+    <div class="nav-links">
+      <a href="/">首页</a>
+      <a href="versions.html">所有版本</a>
+      <a href="support.html">支持</a>
+    </div>
+  </div>
+</nav>
+
+<article class="legal changelog">
+  <div class="container">
+    <h1>更新日志</h1>
+    <p class="legal-meta">所有版本变化按时间倒序排列。</p>
+
+    <!-- ============== v0.1.0 ============== -->
+    <section class="release">
+      <header class="release-head">
+        <span class="release-tag tag-current">最新</span>
+        <h2 id="v0-1-0">v0.1.0</h2>
+        <span class="release-date">2026-06-21</span>
+      </header>
+
+      <p class="release-summary">首个公开版本 — 完整覆盖截图 OCR / 剪贴板历史 / 标注 / 长截图(实验)。</p>
+
+      <h3>核心功能</h3>
+      <ol>
+        <li>全局热键 Control + Option + A 区域截图,Apple Vision 自动 OCR(中文 95%+ 准确率)</li>
+        <li>全局热键 Control + Option + V 打开剪贴板历史(LIKE 子串搜索,中英文)</li>
+        <li>菜单栏常驻 (LSUIElement),无 Dock 图标</li>
+        <li>多屏环境智能识别鼠标所在屏幕,Retina + 外接显示器混合处理正确</li>
+        <li>截图视觉反馈:被截区域 200ms 白光淡出 + 系统截图音(AudioToolbox 沙盒友好)</li>
+        <li>动态菜单栏图标三态(就绪 / 启动中 / 截图中,带 SF Symbol pulse 动画)</li>
+        <li>4 Tab 设置面板:通用 / 热键 / 隐私 / 关于</li>
+        <li>首次启动 3 步引导:隐私承诺 / 热键 / 权限</li>
+      </ol>
+
+      <h3>历史窗口</h3>
+      <ol>
+        <li>NavigationSplitView 3 栏布局(侧栏筛选 + 卡片列表 + 详情)</li>
+        <li>侧栏类型筛选:全部 / 文本 / 图片 / 文件 / 截图历史,带计数</li>
+        <li>截图缩略图(ImageIO 高效解码 + NSCache 缓存)</li>
+        <li>截图详情:大图 + 完整 OCR 文字双栏并排 + 复制 / 导出 / Finder / 删除</li>
+      </ol>
+
+      <h3>标注画布(v0.2 提前实现)</h3>
+      <ol>
+        <li>4 种工具:矩形 / 箭头 / 高亮 / 文本</li>
+        <li>8 色调色板 + 3 档线宽</li>
+        <li>撤销 / 重做 / 一键导出 PNG</li>
+        <li>归一化坐标存储,缩放预览不失真</li>
+      </ol>
+
+      <h3>长截图(v0.2 实验性)</h3>
+      <ol>
+        <li>ImageStitcher 算法:垂直拼接,SSD 灰度采样找重叠最优 offset</li>
+        <li>浮窗式手动滚动 UI(空格抓下一屏 / 回车完成)</li>
+        <li>真实场景测试中(滚动 App 边界处可能有错位)</li>
+      </ol>
+
+      <h3>工程基础</h3>
+      <ol>
+        <li>零外部依赖(仅 Apple 原生框架:SwiftUI / AppKit / Vision / ScreenCaptureKit / SQLite3)</li>
+        <li>macOS 14+,Apple Silicon + Intel 通用二进制</li>
+        <li>App Sandbox + Hardened Runtime + Developer ID 签名 + 公证</li>
+        <li>13 个单元测试(Models / Storage / OCR / Settings)</li>
+        <li>"检查更新"入口已就绪(Sparkle SPM 接好后自动激活)</li>
+      </ol>
+
+      <h3>隐私承诺</h3>
+      <ol>
+        <li>默认不申请网络权限,Activity Monitor 可验证零外联</li>
+        <li>不内嵌任何分析、崩溃、广告 SDK</li>
+        <li>所有 OCR / 历史 / 截图本地处理</li>
+        <li>PrivacyInfo.xcprivacy 仅声明 UserDefaults(理由 CA92.1)</li>
+        <li>严格离线模式开关(隐私 Tab,默认开启)</li>
+      </ol>
+    </section>
+
+    <hr class="release-sep">
+
+    <!-- ============== Roadmap ============== -->
+    <section class="release roadmap-section">
+      <header class="release-head">
+        <span class="release-tag tag-planned">规划</span>
+        <h2 id="v0-2-0">v0.2.0(规划中)</h2>
+        <span class="release-date">预计 2026-09</span>
+      </header>
+
+      <ol>
+        <li>标注马赛克工具(CIPixellate 像素化)</li>
+        <li>长截图改用 Accessibility API 程序化滚动 + 自动判定到底</li>
+        <li>历史搜索切到 FTS5 trigram tokenizer(规模 1000+ 时性能更好)</li>
+        <li>自定义热键录制 UI</li>
+        <li>导出预设(PNG / JPG / PDF / 复制到剪贴板)</li>
+        <li>截图编号自动命名(基于 OCR 内容智能起名)</li>
+      </ol>
+    </section>
+
+    <section class="release roadmap-section">
+      <header class="release-head">
+        <span class="release-tag tag-planned">规划</span>
+        <h2 id="v0-3-0">v0.3.0(规划中)</h2>
+        <span class="release-date">预计 2026-12</span>
+      </header>
+
+      <ol>
+        <li>AI 增强(可选,默认关闭)— 接入备案 LLM(豆包 / Kimi / DeepSeek)做智能总结、翻译、扩写</li>
+        <li>离线 PaddleOCR 增强(手写体识别)</li>
+        <li>截图历史标签 / 收藏 / 批量导出</li>
+        <li>自定义截图音效</li>
+      </ol>
+    </section>
+
+    <section class="release roadmap-section">
+      <header class="release-head">
+        <span class="release-tag tag-planned">规划</span>
+        <h2 id="v1-0-0">v1.0.0(规划中)</h2>
+        <span class="release-date">预计 2027-Q1</span>
+      </header>
+
+      <ol>
+        <li>iOS 配套 App(扫描后传到 Mac OCR)</li>
+        <li>iCloud 同步(可选,默认关 — 隐私优先)</li>
+        <li>团队 / 工作区版本(可选)</li>
+        <li>第一份正式 macOS App Store 提交</li>
+      </ol>
+    </section>
+
+    <section class="release roadmap-section">
+      <header class="release-head">
+        <span class="release-tag tag-planned">规划</span>
+        <h2 id="v2-0-0">v2.0.0(远期)</h2>
+        <span class="release-date">预计 2027-Q3</span>
+      </header>
+
+      <ol>
+        <li>Windows 版(Tauri 重写,共用 OCR 后端)</li>
+        <li>跨设备同步与漫游</li>
+        <li>开放插件 API</li>
+      </ol>
+    </section>
+
+    <hr class="release-sep">
+
+    <p class="changelog-footer">
+      想反馈或建议?发邮件:<a href="mailto:pluck@yipoo.com">pluck@yipoo.com</a><br>
+      或在 <a href="https://github.com/yipoo/pluck/issues" target="_blank" rel="noopener">GitHub Issues</a> 提交。<br>
+      Sparkle 自动更新源:<a href="appcast.xml" target="_blank" rel="noopener">appcast.xml</a>
+    </p>
+
+    <p class="legal-footer">
+      Copyright © 2026 dinglei. All rights reserved.
+    </p>
+  </div>
+</article>
+
+</body>
+</html>
